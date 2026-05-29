@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  word: MyString
+  memo: MyText
+  index: 1
+  latitude: 9.99
+  longitude: 9.99
+  word_chain_walk: one
+
+two:
+  word: MyString
+  memo: MyText
+  index: 1
+  latitude: 9.99
+  longitude: 9.99
+  word_chain_walk: two

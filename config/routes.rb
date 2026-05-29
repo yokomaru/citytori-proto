@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :word_chain_walk_steps
   resources :word_chain_walks
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
