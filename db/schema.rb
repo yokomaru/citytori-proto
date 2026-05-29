@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_05_29_062659) do
+ActiveRecord::Schema[7.1].define(version: 2026_05_29_063311) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "word_chain_walk_steps", force: :cascade do |t|
+    t.string "word"
+    t.text "memo"
+    t.integer "index"
+    t.decimal "latitude", precision: 10, scale: 6
+    t.decimal "longitude", precision: 10, scale: 6
+    t.bigint "word_chain_walk_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["word_chain_walk_id"], name: "index_word_chain_walk_steps_on_word_chain_walk_id"
+  end
 
   create_table "word_chain_walks", force: :cascade do |t|
     t.string "start_char"
@@ -22,4 +34,5 @@ ActiveRecord::Schema[7.1].define(version: 2026_05_29_062659) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "word_chain_walk_steps", "word_chain_walks"
 end
