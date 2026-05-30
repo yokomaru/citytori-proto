@@ -23,16 +23,15 @@ class WordChainWalksController < ApplicationController
 
   # POST /word_chain_walks or /word_chain_walks.json
   def create
-    @word_chain_walk = WordChainWalk.new(word_chain_walk_params)
+    @word_chain_walk = WordChainWalk.new(start_char: "あ", started_at: Time.zone.now)
 
-    respond_to do |format|
-      if @word_chain_walk.save
-        format.html { redirect_to @word_chain_walk, notice: "Word chain walk was successfully created." }
-        format.json { render :show, status: :created, location: @word_chain_walk }
-      else
-        format.html { render :new, status: :unprocessable_content }
-        format.json { render json: @word_chain_walk.errors, status: :unprocessable_content }
-      end
+    if @word_chain_walk.save
+      redirect_to @word_chain_walk, notice: "Word chain walk was successfully created."
+    else
+      @word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).all
+      @active_word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).where(finished_at: nil)
+      @completed_word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).where.not(finished_at: nil)
+      render :index, status: :unprocessable_content
     end
   end
 
@@ -65,8 +64,8 @@ class WordChainWalksController < ApplicationController
       @word_chain_walk = WordChainWalk.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
-    def word_chain_walk_params
-      params.require(:word_chain_walk).permit(:start_char, :started_at, :finished_at)
-    end
+    # # Only allow a list of trusted parameters through.
+    # def word_chain_walk_params
+    #   params.require(:word_chain_walk).permit(:start_char, :started_at, :finished_at, is_public: )
+    # end
 end
