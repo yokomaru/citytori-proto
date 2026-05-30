@@ -5,25 +5,90 @@
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
 
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Word chain walks</h1>
-    <%= link_to "New word chain walk", new_word_chain_walk_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
-  </div>
-
-  <div id="word_chain_walks" class="min-w-full divide-y divide-gray-200 space-y-5">
-    <% if @word_chain_walks.any? %>
-      <% @word_chain_walks.each do |word_chain_walk| %>
+  <% if @active_word_chain_walks.any? %>
+    <p class="text-center my-10">現在進行中の散歩を表示する</p>
+      <% @active_word_chain_walks.each do |active_word_chain_walk| %>
         <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-          <%= render word_chain_walk %>
+
+            <%if active_word_chain_walk.finished_at.present? %>
+              <div>
+                完成
+              </div>
+            <% end %>
+
+          <div id="<%= dom_id active_word_chain_walk %>" class="w-full sm:w-auto my-5 space-y-5">
+            <div>
+              <strong class="block font-medium mb-1">最新の子データ: </strong>
+              <%= active_word_chain_walk.word_chain_walk_steps.last&.word %>
+            </div>
+            <div>
+              <strong class="block font-medium mb-1">現在のターン: </strong>
+              <%= active_word_chain_walk.word_chain_walk_steps.size %>
+            </div>
+            <div>
+              <strong class="block font-medium mb-1">Start char:</strong>
+              <%= active_word_chain_walk.start_char %>
+            </div>
+            <div>
+              <strong class="block font-medium mb-1">Started at:</strong>
+              <%= active_word_chain_walk.started_at %>
+            </div>
+          </div>
           <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
-            <%= link_to "Show", word_chain_walk, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_word_chain_walk_path(word_chain_walk), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= button_to "Destroy", word_chain_walk, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+            <%= link_to "Show", active_word_chain_walk, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+            <%= link_to "Edit", edit_word_chain_walk_path(active_word_chain_walk), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+            <%= button_to "Destroy", active_word_chain_walk, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
           </div>
         </div>
       <% end %>
     <% else %>
-      <p class="text-center my-10">No word chain walks found.</p>
+    <div class="flex justify-between items-center">
+      <h1 class="font-bold text-4xl">Word chain walks</h1>
+      <%= link_to "New word chain walk", new_word_chain_walk_path, class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+    </div>
+    <% end %>
+
+  <div id="word_chain_walks" class="min-w-full divide-y divide-gray-200 space-y-5">
+    <% if @completed_word_chain_walks.any? %>
+      <p class="text-center my-10">過去の散歩を表示する</p>
+      <% @completed_word_chain_walks.each do |completed_word_chain_walk| %>
+        <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
+
+            <%if completed_word_chain_walk.finished_at.present? %>
+              <div>
+                完成
+              </div>
+            <% end %>
+
+          <div id="<%= dom_id completed_word_chain_walk %>" class="w-full sm:w-auto my-5 space-y-5">
+            <div>
+              <strong class="block font-medium mb-1">最新の子データ: </strong>
+              <%= completed_word_chain_walk.word_chain_walk_steps.last&.word %>
+            </div>
+            <div>
+              <strong class="block font-medium mb-1">現在のターン: </strong>
+              <%= completed_word_chain_walk.word_chain_walk_steps.size %>
+            </div>
+            <div>
+              <strong class="block font-medium mb-1">Start char:</strong>
+              <%= completed_word_chain_walk.start_char %>
+            </div>
+            <div>
+              <strong class="block font-medium mb-1">Started at:</strong>
+              <%= completed_word_chain_walk.started_at %>
+            </div>
+          </div>
+          <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
+            <%= link_to "Show", completed_word_chain_walk, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+            <%= link_to "Edit", edit_word_chain_walk_path(completed_word_chain_walk), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
+            <%= button_to "Destroy", completed_word_chain_walk, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
+          </div>
+        </div>
+      <% end %>
     <% end %>
   </div>
+
+  <% if @active_word_chain_walks.blank? && @completed_word_chain_walks.blank? %>
+    <p class="text-center my-10">早速遊ぼう</p>
+  <% end %>
 </div>

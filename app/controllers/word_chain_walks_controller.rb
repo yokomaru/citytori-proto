@@ -3,7 +3,9 @@ class WordChainWalksController < ApplicationController
 
   # GET /word_chain_walks or /word_chain_walks.json
   def index
-    @word_chain_walks = WordChainWalk.all
+    @word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).all
+    @active_word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).where(finished_at: nil)
+    @completed_word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).where.not(finished_at: nil)
   end
 
   # GET /word_chain_walks/1 or /word_chain_walks/1.json
