@@ -6,6 +6,18 @@
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
+  <% if @word_chain_walk_step.present? && @word_chain_walk_step.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(@word_chain_walk_step.errors.count, "error") %> prohibited this word_chain_walk_step from being saved:</h2>
+
+      <ul class="list-disc ml-6">
+        <% @word_chain_walk_step.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
 
   <% if @active_word_chain_walks.any? %>
     <p class="text-center my-10">現在進行中の散歩を表示する</p>
