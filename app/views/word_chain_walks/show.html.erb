@@ -4,7 +4,19 @@
   <% if notice.present? %>
     <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice"><%= notice %></p>
   <% end %>
+  <% if @word_chain_walk_step&.errors&.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2>
+        <%= pluralize(@word_chain_walk_step.errors.count, "error") %> prohibited this word_chain_walk from being saved:
+      </h2>
 
+      <ul class="list-disc ml-6">
+        <% @word_chain_walk_step.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
   <div>
       <%= @target_char %>
   </div>
@@ -14,8 +26,7 @@
 
   <div>
     <div class="flex justify-between items-center">
-      <h1 class="font-bold text-4xl">Word chain walk steps</h1>
-    <%= link_to "写真を撮る", new_word_chain_walk_step_path(@word_chain_walk_step), class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
+    <%= link_to "写真を撮る", new_word_chain_walk_word_chain_walk_step_path(@word_chain_walk), class: "rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white block font-medium" %>
     </div>
     <% if @word_chain_walk.finished_at.nil? && @word_chain_walk_steps.any? %>
       <div id="word_chain_walk_steps" class="min-w-full divide-y divide-gray-200 space-y-5">

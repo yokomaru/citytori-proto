@@ -12,7 +12,9 @@ class WordChainWalkStepsController < ApplicationController
 
   # GET /word_chain_walk_steps/new
   def new
-    @word_chain_walk_step = WordChainWalkStep.new
+    @word_chain_walk = WordChainWalk.preload(:word_chain_walk_steps).find(params[:word_chain_walk_id])
+    @target_char = @word_chain_walk.word_chain_walk_steps.last.present? ? @word_chain_walk.word_chain_walk_steps.last.word[-1] : @word_chain_walk.start_char
+    @word_chain_walk_step = WordChainWalkStep.new(word_chain_walk_id: params[:word_chain_walk_id])
   end
 
   # GET /word_chain_walk_steps/1/edit
@@ -21,18 +23,19 @@ class WordChainWalkStepsController < ApplicationController
 
   # POST /word_chain_walk_steps or /word_chain_walk_steps.json
   def create
-    @word_chain_walk_step = WordChainWalkStep.new(word_chain_walk_step_params)
+    # @word_chain_walk_step = WordChainWalkStep.new(word_chain_walk_step_params)
+    @word_chain_walk = WordChainWalk.find(params[:word_chain_walk_id])
+    @word_chain_walk_step = @word_chain_walk.word_chain_walk_steps.new(word_chain_walk_step_params)
 
-    respond_to do |format|
-      if @word_chain_walk_step.save
-        format.html { redirect_to @word_chain_walk_step, notice: "Word chain walk step was successfully created." }
-        format.json { render :show, status: :created, location: @word_chain_walk_step }
-      else
-        format.html { render :new, status: :unprocessable_content }
-        format.json { render json: @word_chain_walk_step.errors, status: :unprocessable_content }
-      end
+
+    if @word_chain_walk_step.save
+      redirect_to word_chain_walk_path(@word_chain_walk), notice: "Word chain walk step was successfully created."
+    else
+      render :index, status: :unprocessable_content
     end
   end
+
+
 
   # PATCH/PUT /word_chain_walk_steps/1 or /word_chain_walk_steps/1.json
   def update

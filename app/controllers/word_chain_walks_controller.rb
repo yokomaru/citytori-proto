@@ -11,8 +11,8 @@ class WordChainWalksController < ApplicationController
   # GET /word_chain_walks/1 or /word_chain_walks/1.json
   def show
     @word_chain_walk = WordChainWalk.preload(:word_chain_walk_steps).find(params[:id])
-    @word_chain_walk_steps = WordChainWalkStep.order(index: :desc)
-    @target_char = WordChainWalkStep.last.present? ? WordChainWalkStep.last.word[-1] : @word_chain_walk.start_char
+    @word_chain_walk_steps = @word_chain_walk.word_chain_walk_steps.order(index: :desc)
+    @target_char = @word_chain_walk.word_chain_walk_steps.last.present? ? @word_chain_walk.word_chain_walk_steps.last.word[-1] : @word_chain_walk.start_char
   end
 
   # GET /word_chain_walks/new

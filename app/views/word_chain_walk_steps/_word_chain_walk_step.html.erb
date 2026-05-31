@@ -1,4 +1,12 @@
 <div id="<%= dom_id word_chain_walk_step %>" class="w-full sm:w-auto my-5 space-y-5">
+
+
+
+
+    <strong class="block font-medium mb-1">Image:</strong>
+    <%= image_tag word_chain_walk_step.image if word_chain_walk_step.image.present? %>
+  <div>
+  </div>
   <div>
     <strong class="block font-medium mb-1">Word:</strong>
     <%= word_chain_walk_step.word %>
