@@ -1,5 +1,5 @@
 class WordChainWalksController < ApplicationController
-  before_action :set_word_chain_walk, only: %i[ show edit update destroy ]
+  #before_action :set_word_chain_walk, only: %i[ show edit update destroy ]
 
   # GET /word_chain_walks or /word_chain_walks.json
   def index
@@ -10,6 +10,9 @@ class WordChainWalksController < ApplicationController
 
   # GET /word_chain_walks/1 or /word_chain_walks/1.json
   def show
+    @word_chain_walk = WordChainWalk.preload(:word_chain_walk_steps).find(params[:id])
+    @word_chain_walk_steps = WordChainWalkStep.order(index: :desc)
+    @target_char = WordChainWalkStep.last.present? ? WordChainWalkStep.last.word[-1] : @word_chain_walk.start_char
   end
 
   # GET /word_chain_walks/new
