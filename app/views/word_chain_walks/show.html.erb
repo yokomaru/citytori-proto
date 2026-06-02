@@ -32,7 +32,8 @@
       <div id="word_chain_walk_steps" class="min-w-full divide-y divide-gray-200 space-y-5">
           <% @word_chain_walk_steps.each do |word_chain_walk_step| %>
             <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
-              <%= render word_chain_walk_step %>
+              <%= link_to word_chain_walk_step.word, word_chain_walk_step_path(word_chain_walk_step), class: "text-blue-500 hover:underline" %>
+              <%= image_tag word_chain_walk_step.image if word_chain_walk_step.image.present? %>
               <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
                 <% if @word_chain_walk.finished_at.nil? && @latest_step == word_chain_walk_step %>
                   <%= button_to "Destroy", latest_word_chain_walk_word_chain_walk_steps_path(@word_chain_walk), method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
