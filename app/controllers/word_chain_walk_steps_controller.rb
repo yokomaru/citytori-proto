@@ -8,6 +8,7 @@ class WordChainWalkStepsController < ApplicationController
 
   # GET /word_chain_walk_steps/1 or /word_chain_walk_steps/1.json
   def show
+    @initial_char = @word_chain_walk_step.word[0]
   end
 
   # GET /word_chain_walk_steps/new

@@ -1,5 +1,9 @@
 <div id="<%= dom_id word_chain_walk_step %>" class="w-full sm:w-auto my-5 space-y-5">
   <div>
+    <strong class="block font-medium mb-1">最初の文字</strong>
+    <%= @initial_char %>
+  </div>
+  <div>
     <strong class="block font-medium mb-1">Image:</strong>
     <%= image_tag word_chain_walk_step.image if word_chain_walk_step.image.present? %>
   </div>
