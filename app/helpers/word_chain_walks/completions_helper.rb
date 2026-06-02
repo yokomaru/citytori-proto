@@ -1,0 +1,2 @@
+module WordChainWalks::CompletionsHelper
+end

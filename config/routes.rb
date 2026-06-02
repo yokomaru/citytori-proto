@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   resources :word_chain_walk_steps
   resources :word_chain_walks do
+    resource :completion, only: [:update, :show]
     resources :word_chain_walk_steps, only: [:index, :new, :create]  do
        delete "latest", on: :collection
     end
   end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
