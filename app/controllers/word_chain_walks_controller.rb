@@ -13,6 +13,7 @@ class WordChainWalksController < ApplicationController
     @word_chain_walk = WordChainWalk.preload(:word_chain_walk_steps).find(params[:id])
     @word_chain_walk_steps = @word_chain_walk.word_chain_walk_steps.order(index: :desc)
     @target_char = @word_chain_walk.word_chain_walk_steps.last.present? ? @word_chain_walk.word_chain_walk_steps.last.word[-1] : @word_chain_walk.start_char
+    @latest_step = @word_chain_walk.word_chain_walk_steps.last
   end
 
   # GET /word_chain_walks/new
