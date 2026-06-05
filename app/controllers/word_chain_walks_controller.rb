@@ -54,12 +54,11 @@ class WordChainWalksController < ApplicationController
 
   # DELETE /word_chain_walks/1 or /word_chain_walks/1.json
   def destroy
+    @word_chain_walk = WordChainWalk.find(params[:id])
     @word_chain_walk.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to word_chain_walks_path, notice: "Word chain walk was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    redirect_to word_chain_walks_path, notice: "Word chain walk was successfully destroyed.", status: :see_other
+
   end
 
   private

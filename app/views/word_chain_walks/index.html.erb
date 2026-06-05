@@ -52,7 +52,6 @@
           </div>
           <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
             <%= link_to "Show", active_word_chain_walk, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_word_chain_walk_path(active_word_chain_walk), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
             <%= button_to "Destroy", active_word_chain_walk, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
           </div>
         </div>
@@ -96,7 +95,6 @@
           </div>
           <div class="w-full sm:w-auto flex flex-col sm:flex-row space-x-2 space-y-2">
             <%= link_to "Show", completed_word_chain_walk, class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
-            <%= link_to "Edit", edit_word_chain_walk_path(completed_word_chain_walk), class: "w-full sm:w-auto text-center rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
             <%= button_to "Destroy", completed_word_chain_walk, method: :delete, class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 text-white bg-red-600 hover:bg-red-500 font-medium cursor-pointer", data: { turbo_confirm: "Are you sure?" } %>
           </div>
         </div>

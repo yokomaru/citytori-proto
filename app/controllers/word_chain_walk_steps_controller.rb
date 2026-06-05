@@ -36,8 +36,6 @@ class WordChainWalkStepsController < ApplicationController
     end
   end
 
-
-
   # PATCH/PUT /word_chain_walk_steps/1 or /word_chain_walk_steps/1.json
   def update
     respond_to do |format|
@@ -53,12 +51,10 @@ class WordChainWalkStepsController < ApplicationController
 
   # DELETE /word_chain_walk_steps/1 or /word_chain_walk_steps/1.json
   def destroy
+    @word_chain_walk = WordChainWalk.find(params[:word_chain_walk_id])
     @word_chain_walk_step.destroy!
 
-    respond_to do |format|
-      format.html { redirect_to word_chain_walk_steps_path, notice: "Word chain walk step was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
-    end
+    redirect_to word_chain_walk_path(@word_chain_walk), notice: "Word chain walk step was successfully destroyed.", status: :see_other
   end
 
   def latest
