@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_05_30_075938) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_06_092913) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -49,7 +49,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_05_30_075938) do
     t.decimal "longitude", precision: 10, scale: 6
     t.text "memo"
     t.datetime "updated_at", null: false
-    t.string "word"
+    t.string "word", limit: 100, null: false
     t.bigint "word_chain_walk_id", null: false
     t.index ["word_chain_walk_id"], name: "index_word_chain_walk_steps_on_word_chain_walk_id"
   end
