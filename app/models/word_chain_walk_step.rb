@@ -10,7 +10,10 @@ class WordChainWalkStep < ApplicationRecord
   validate :must_connect_previous_char
 
   def must_connect_previous_char
+    return if word.blank?
+
     previous_step = word_chain_walk.word_chain_walk_steps.order(:id).last
+    # TODO: 本当はword[-1]を正規化する必要がある
     previous_char = previous_step.present? ? previous_step.word[-1] : word_chain_walk.start_char
     if previous_char != word[0]
       errors.add(:word, "と前の文字が繋がっていません")

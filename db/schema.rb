@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_06_092913) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_07_090906) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -58,8 +58,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_06_092913) do
     t.datetime "created_at", null: false
     t.datetime "finished_at"
     t.boolean "is_public", default: false, null: false
-    t.string "start_char"
-    t.datetime "started_at"
+    t.string "start_char", null: false
+    t.datetime "started_at", null: false
     t.datetime "updated_at", null: false
   end
 
