@@ -50,4 +50,10 @@ RSpec.describe WordChainWalk, type: :model do
 
     expect(word_chain_walk.start_char).to match(/\A[あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわを]\z/)
   end
+
+  it '終了日が埋まっていたら終了済みだと判定されること' do
+    word_chain_walk = FactoryBot.build(:word_chain_walk, started_at: Time.zone.local(2026, 6, 2, 10, 0, 0), finished_at: Time.zone.local(2026, 6, 3, 10, 0, 0))
+
+    expect(word_chain_walk.finished?).to be true
+  end
 end

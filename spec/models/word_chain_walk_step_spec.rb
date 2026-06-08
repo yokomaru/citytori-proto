@@ -48,4 +48,11 @@ RSpec.describe WordChainWalkStep, type: :model do
     second_step = FactoryBot.build(:word_chain_walk_step, word_chain_walk: word_chain_walk, word: "らっぱ")
     expect(second_step).to be_invalid
   end
+
+  it 'しりとり散歩が終了済みなら新規ステップの追加はできない' do
+    FactoryBot.create(:word_chain_walk_step, word_chain_walk: word_chain_walk, word: "りんご")
+    word_chain_walk.update(finished_at: Time.zone.local(2026, 6, 6, 10, 0, 0))
+    next_step = FactoryBot.build(:word_chain_walk_step, word_chain_walk: word_chain_walk, word: "ごりら")
+    expect(next_step).to be_invalid
+  end
 end

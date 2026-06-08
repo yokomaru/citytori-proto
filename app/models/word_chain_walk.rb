@@ -16,6 +16,12 @@ class WordChainWalk < ApplicationRecord
 
   after_initialize :assign_random_start_char, if: :new_record?
 
+  def finished?
+    finished_at.present?
+  end
+
+  private
+
   def assign_random_start_char
     return if start_char.present?
     self.start_char = ALLOW_START_CHARS.sample
