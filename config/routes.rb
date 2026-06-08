@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
-  resources :word_chain_walk_steps
-  resources :word_chain_walks do
+  resources :word_chain_walks, only: [:index, :create, :destroy, :show]do
     resource :completion, only: [:update, :show]
-    resources :word_chain_walk_steps, only: [:index, :new, :create]  do
+    resources :word_chain_walk_steps, only: [:new, :create, :show]  do
        delete "latest", on: :collection
     end
   end
