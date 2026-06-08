@@ -44,4 +44,10 @@ RSpec.describe WordChainWalk, type: :model do
     word_chain_walk = FactoryBot.build(:word_chain_walk, started_at: Time.zone.local(2026, 6, 2, 10, 0, 0), finished_at: Time.zone.local(2026, 6, 1, 10, 0, 0))
     expect(word_chain_walk).to be_invalid
   end
+
+  it 'ランダムなひらがな1文字が帰ってくること' do
+    word_chain_walk = WordChainWalk.new(started_at: Time.zone.local(2026, 6, 2, 10, 0, 0))
+
+    expect(word_chain_walk.start_char).to match(/\A[あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわを]\z/)
+  end
 end

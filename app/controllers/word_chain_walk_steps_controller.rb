@@ -24,15 +24,13 @@ class WordChainWalkStepsController < ApplicationController
 
   # POST /word_chain_walk_steps or /word_chain_walk_steps.json
   def create
-    # @word_chain_walk_step = WordChainWalkStep.new(word_chain_walk_step_params)
     @word_chain_walk = WordChainWalk.find(params[:word_chain_walk_id])
     @word_chain_walk_step = @word_chain_walk.word_chain_walk_steps.new(word_chain_walk_step_params)
-
 
     if @word_chain_walk_step.save
       redirect_to word_chain_walk_path(@word_chain_walk), notice: "Word chain walk step was successfully created."
     else
-      render :index, status: :unprocessable_content
+      render :new, status: :unprocessable_content
     end
   end
 
