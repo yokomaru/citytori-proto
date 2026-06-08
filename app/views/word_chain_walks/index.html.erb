@@ -25,7 +25,7 @@
       <% @active_word_chain_walks.each do |active_word_chain_walk| %>
         <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
 
-            <%if active_word_chain_walk.finished_at.present? %>
+            <% if active_word_chain_walk.finished? %>
               <div>
                 完成
               </div>
@@ -67,7 +67,7 @@
       <% @completed_word_chain_walks.each do |completed_word_chain_walk| %>
         <div class="flex flex-col sm:flex-row justify-between items-center pb-5 sm:pb-0">
 
-            <%if completed_word_chain_walk.finished_at.present? %>
+            <%if completed_word_chain_walk.finished? %>
               <div>
                 完成
               </div>

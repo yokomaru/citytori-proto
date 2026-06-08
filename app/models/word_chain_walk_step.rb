@@ -8,6 +8,9 @@ class WordChainWalkStep < ApplicationRecord
   validates :word, format: { with: /\A[ぁ-んー]*\z/ }
 
   validate :must_connect_previous_char
+  validate :must_not_add_steps_to_finished_word_chain_walk
+
+  private
 
   def must_connect_previous_char
     return if word.blank?
@@ -17,6 +20,13 @@ class WordChainWalkStep < ApplicationRecord
     previous_char = previous_step.present? ? previous_step.word[-1] : word_chain_walk.start_char
     if previous_char != word[0]
       errors.add(:word, "と前の文字が繋がっていません")
+    end
+  end
+
+  def must_not_add_steps_to_finished_word_chain_walk
+    return if word.blank?
+    if word_chain_walk.finished?
+      errors.add(:word, "は終了済みのしりとり散歩には追加できません")
     end
   end
 end
