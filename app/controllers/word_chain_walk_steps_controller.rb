@@ -30,6 +30,8 @@ class WordChainWalkStepsController < ApplicationController
     if @word_chain_walk_step.save
       redirect_to word_chain_walk_path(@word_chain_walk), notice: "Word chain walk step was successfully created."
     else
+      latest_step = @word_chain_walk.word_chain_walk_steps.order(:id).last
+      @target_char = latest_step.present? ? latest_step.word[-1] : @word_chain_walk.start_char
       render :new, status: :unprocessable_content
     end
   end

@@ -10,7 +10,13 @@ class WordChainWalkStep < ApplicationRecord
   validate :must_connect_previous_char
   validate :must_not_add_steps_to_finished_word_chain_walk
 
+  validate :image_attached
+
   private
+
+  def image_attached
+    errors.add(:image, "を添付してください") unless image.attached?
+  end
 
   def must_connect_previous_char
     return if word.blank?
