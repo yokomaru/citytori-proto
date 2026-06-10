@@ -26,7 +26,7 @@ class WordChainWalk < ApplicationRecord
 
   def target_char
     return start_char if latest_step.nil?
-    word_chain_walk_steps.last.word[-1] #本当は正規化必要
+    latest_step.word[-1] #本当は正規化必要
   end
 
   private
