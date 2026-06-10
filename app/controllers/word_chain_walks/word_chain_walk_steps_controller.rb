@@ -1,11 +1,6 @@
 class WordChainWalks::WordChainWalkStepsController < ApplicationController
   before_action :set_word_chain_walk_step, only: %i[ show edit update destroy ]
 
-  # GET /word_chain_walk_steps or /word_chain_walk_steps.json
-  def index
-    @word_chain_walk_steps = WordChainWalkStep.all
-  end
-
   # GET /word_chain_walk_steps/1 or /word_chain_walk_steps/1.json
   def show
     @initial_char = @word_chain_walk_step.word[0]
@@ -14,12 +9,7 @@ class WordChainWalks::WordChainWalkStepsController < ApplicationController
   # GET /word_chain_walk_steps/new
   def new
     @word_chain_walk = WordChainWalk.preload(:word_chain_walk_steps).find(params[:word_chain_walk_id])
-    @target_char = @word_chain_walk.word_chain_walk_steps.last.present? ? @word_chain_walk.word_chain_walk_steps.last.word[-1] : @word_chain_walk.start_char
     @word_chain_walk_step = WordChainWalkStep.new(word_chain_walk_id: params[:word_chain_walk_id])
-  end
-
-  # GET /word_chain_walk_steps/1/edit
-  def edit
   end
 
   # POST /word_chain_walk_steps or /word_chain_walk_steps.json

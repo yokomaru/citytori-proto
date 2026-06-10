@@ -12,17 +12,7 @@ class WordChainWalksController < ApplicationController
   def show
     @word_chain_walk = WordChainWalk.preload(:word_chain_walk_steps).find(params[:id])
     @word_chain_walk_steps = @word_chain_walk.word_chain_walk_steps.order(index: :desc)
-    @target_char = @word_chain_walk.word_chain_walk_steps.last.present? ? @word_chain_walk.word_chain_walk_steps.last.word[-1] : @word_chain_walk.start_char
     @latest_step = @word_chain_walk.word_chain_walk_steps.last
-  end
-
-  # GET /word_chain_walks/new
-  def new
-    @word_chain_walk = WordChainWalk.new
-  end
-
-  # GET /word_chain_walks/1/edit
-  def edit
   end
 
   # POST /word_chain_walks or /word_chain_walks.json
@@ -39,26 +29,12 @@ class WordChainWalksController < ApplicationController
     end
   end
 
-  # PATCH/PUT /word_chain_walks/1 or /word_chain_walks/1.json
-  def update
-    respond_to do |format|
-      if @word_chain_walk.update(word_chain_walk_params)
-        format.html { redirect_to @word_chain_walk, notice: "Word chain walk was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @word_chain_walk }
-      else
-        format.html { render :edit, status: :unprocessable_content }
-        format.json { render json: @word_chain_walk.errors, status: :unprocessable_content }
-      end
-    end
-  end
-
   # DELETE /word_chain_walks/1 or /word_chain_walks/1.json
   def destroy
     @word_chain_walk = WordChainWalk.find(params[:id])
     @word_chain_walk.destroy!
 
     redirect_to word_chain_walks_path, notice: "Word chain walk was successfully destroyed.", status: :see_other
-
   end
 
   private
