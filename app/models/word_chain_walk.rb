@@ -20,6 +20,15 @@ class WordChainWalk < ApplicationRecord
     finished_at.present?
   end
 
+  def latest_step
+    word_chain_walk_steps.order(:id).last
+  end
+
+  def target_char
+    return start_char if latest_step.nil?
+    word_chain_walk_steps.last.word[-1] #本当は正規化必要
+  end
+
   private
 
   def assign_random_start_char

@@ -56,4 +56,31 @@ RSpec.describe WordChainWalk, type: :model do
 
     expect(word_chain_walk.finished?).to be true
   end
+
+  it "最新のステップが取得できること" do
+    word_chain_walk = FactoryBot.build(:word_chain_walk, start_char: "り")
+    FactoryBot.create(:word_chain_walk_step, :with_image, word_chain_walk: word_chain_walk, word: "りんご")
+    new_step = FactoryBot.create(:word_chain_walk_step, :with_image, word_chain_walk: word_chain_walk, word: "ごりら")
+
+    expect(word_chain_walk.latest_step).to eq(new_step)
+  end
+
+  it "ステップがない場合はnilが帰ってくること" do
+    word_chain_walk = FactoryBot.build(:word_chain_walk, start_char: "り")
+
+    expect(word_chain_walk.latest_step).to eq(nil)
+  end
+
+  it "ステップがある場合は、登録済みの最新ステップのwordの最後の1文字現在探している文字を取得できること" do
+    word_chain_walk = FactoryBot.build(:word_chain_walk, start_char: "り")
+    FactoryBot.create(:word_chain_walk_step, :with_image, word_chain_walk: word_chain_walk, word: "りんご")
+
+    expect(word_chain_walk.target_char).to eq("ご")
+  end
+
+  it "ステップがない場合は、start_charが現在探している文字として表示できること" do
+    word_chain_walk = FactoryBot.build(:word_chain_walk, start_char: "り")
+
+    expect(word_chain_walk.target_char).to eq("り")
+  end
 end
