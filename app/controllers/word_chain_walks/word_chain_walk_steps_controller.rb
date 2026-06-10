@@ -37,23 +37,16 @@ class WordChainWalks::WordChainWalkStepsController < ApplicationController
     end
   end
 
-  # DELETE /word_chain_walk_steps/1 or /word_chain_walk_steps/1.json
-  def destroy
+  def destroy_latest
     @word_chain_walk = WordChainWalk.find(params[:word_chain_walk_id])
-    @word_chain_walk_step.destroy!
+    latest_step = @word_chain_walk.latest_step
 
-    redirect_to word_chain_walk_path(@word_chain_walk), notice: "Word chain walk step was successfully destroyed.", status: :see_other
-  end
-
-  def latest
-    @word_chain_walk = WordChainWalk.find(params[:word_chain_walk_id])
-    logger.debug "@word_chain_walk: #{@word_chain_walk}"
-    logger.debug "@word_chain_walk.word_chain_walk_steps.last: #{@word_chain_walk.word_chain_walk_steps.last}"
-    if @word_chain_walk.word_chain_walk_steps.last.present?
-      @word_chain_walk.word_chain_walk_steps.last.destroy!
-      redirect_to word_chain_walk_path(@word_chain_walk), notice: "Word chain walk was successfully destroyed.", status: :see_other
+    if latest_step
+      latest_step.destroy!
+      redirect_to word_chain_walk_path(@word_chain_walk), notice: "一手前の言葉を削除しました", status: :see_other
+    else
+      redirect_to word_chain_walk_path(@word_chain_walk), alert: "削除できる言葉がありません", status: :see_other
     end
-    # destroyの分岐作る
   end
 
   private

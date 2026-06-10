@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     scope module: :word_chain_walks do
       resource :completion, only: [:update, :show]
       resources :word_chain_walk_steps, only: [:new, :create, :show]  do
-        delete "latest", on: :collection
+        delete "latest", on: :collection, action: :destroy_latest
       end
     end
   end
