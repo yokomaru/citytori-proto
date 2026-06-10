@@ -1,49 +1,35 @@
 require 'rails_helper'
 
 RSpec.describe "WordChainWalks::WordChainWalkSteps", type: :request do
-describe "DELETE /word_chain_walks/:word_chain_walk_id/word_chain_walk_steps/latest" do
+  describe "DELETE /word_chain_walks/:word_chain_walk_id/word_chain_walk_steps/latest" do
+    let(:word_chain_walk) { FactoryBot.create(:word_chain_walk, start_char: "り") }
 
     context "ステップが存在する場合" do
-      before do
-        @project = FactoryBot.create(:project)
-      end
-
       it "ステップが削除されること" do
+        old_step = FactoryBot.create(:word_chain_walk_step, :with_image,  word_chain_walk: word_chain_walk, word: "りんご")
+        latest_step = FactoryBot.create(:word_chain_walk_step, :with_image, word_chain_walk: word_chain_walk, word: "ごりら")
 
-        # WordChainWalkを作る
-        # 古いStepを作る
-        # 最新Stepを作る
+        expect do
+          delete latest_word_chain_walk_word_chain_walk_steps_path(word_chain_walk)
+        end.to change(WordChainWalkStep, :count).by(-1)
 
-        # DELETE /latest を送る
-
-        # Stepの件数が1減ること
-        # 最新Stepが削除されていること
-        # 古いStepは残っていること
-        # 正しい画面へリダイレクトすること
-
-        # expect do
-        #   delete project_path(@project)
-        # end.to change(Project, :count).by(-1)
-        # expect(response).to redirect_to(projects_path)
+        expect(WordChainWalkStep.exists?(old_step.id)).to be true
+        expect(WordChainWalkStep.exists?(latest_step.id)).to be false
+        expect(response).to redirect_to(word_chain_walk_path(word_chain_walk))
       end
     end
 
     context "ステップが存在しない場合" do
-      before do
-        @project = FactoryBot.create(:project)
-      end
 
       it "ステップが削除されないこと" do
-        # WordChainWalkだけ作る
+        word_chain_walk = FactoryBot.create(:word_chain_walk)
 
         # DELETE /latest を送る
+        expect do
+          delete latest_word_chain_walk_word_chain_walk_steps_path(word_chain_walk)
+        end.to change(WordChainWalkStep, :count).by(0)
 
-        # Stepの件数が変わらないこと
-        # 正しい画面へリダイレクトすること
-        # expect do
-        #   delete project_path(@project)
-        # end.to change(Project, :count).by(-1)
-        # expect(response).to redirect_to(projects_path)
+        expect(response).to redirect_to(word_chain_walk_path(word_chain_walk))
       end
     end
   end

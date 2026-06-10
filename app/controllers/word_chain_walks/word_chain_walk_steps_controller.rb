@@ -1,5 +1,5 @@
 class WordChainWalks::WordChainWalkStepsController < ApplicationController
-  before_action :set_word_chain_walk_step, only: %i[ show edit update destroy ]
+  before_action :set_word_chain_walk_step, only: %i[ show ]
 
   # GET /word_chain_walk_steps/1 or /word_chain_walk_steps/1.json
   def show
@@ -24,19 +24,6 @@ class WordChainWalks::WordChainWalkStepsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /word_chain_walk_steps/1 or /word_chain_walk_steps/1.json
-  def update
-    respond_to do |format|
-      if @word_chain_walk_step.update(word_chain_walk_step_params)
-        format.html { redirect_to @word_chain_walk_step, notice: "Word chain walk step was successfully updated.", status: :see_other }
-        format.json { render :show, status: :ok, location: @word_chain_walk_step }
-      else
-        format.html { render :edit, status: :unprocessable_content }
-        format.json { render json: @word_chain_walk_step.errors, status: :unprocessable_content }
-      end
-    end
-  end
-
   def destroy_latest
     @word_chain_walk = WordChainWalk.find(params[:word_chain_walk_id])
     latest_step = @word_chain_walk.latest_step
@@ -45,7 +32,9 @@ class WordChainWalks::WordChainWalkStepsController < ApplicationController
       latest_step.destroy!
       redirect_to word_chain_walk_path(@word_chain_walk), notice: "一手前の言葉を削除しました", status: :see_other
     else
-      redirect_to word_chain_walk_path(@word_chain_walk), alert: "削除できる言葉がありません", status: :see_other
+      word_chain_walk = WordChainWalk.preload(:word_chain_walk_steps).find(params[:word_chain_walk_id])
+      @word_chain_walk_steps = word_chain_walk.word_chain_walk_steps.order(id: :desc)
+      redirect_to word_chain_walk_path(@word_chain_walk), status: :see_other
     end
   end
 
