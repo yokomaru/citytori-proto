@@ -17,7 +17,7 @@ class WordChainWalksController < ApplicationController
 
   # POST /word_chain_walks or /word_chain_walks.json
   def create
-    @word_chain_walk = WordChainWalk.new(started_at: Time.zone.now)
+    @word_chain_walk = WordChainWalk.new
 
     if @word_chain_walk.save
       redirect_to @word_chain_walk, notice: "Word chain walk was successfully created."

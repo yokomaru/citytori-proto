@@ -15,6 +15,7 @@ class WordChainWalk < ApplicationRecord
   validates :finished_at, comparison: { greater_than: :started_at }, allow_nil: true
 
   after_initialize :assign_random_start_char, if: :new_record?
+  after_initialize :assign_started_at, if: :new_record?
 
   def finished?
     finished_at.present?
@@ -44,5 +45,10 @@ class WordChainWalk < ApplicationRecord
   def assign_random_start_char
     return if start_char.present?
     self.start_char = ALLOW_START_CHARS.sample
+  end
+
+  def assign_started_at
+    return if started_at.present?
+    self.started_at = Time.zone.now
   end
 end
