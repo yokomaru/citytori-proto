@@ -17,6 +17,9 @@ class WordChainWalk < ApplicationRecord
   after_initialize :assign_random_start_char, if: :new_record?
   after_initialize :assign_started_at, if: :new_record?
 
+  scope :finished, -> { where.not(finished_at: nil) }
+  scope :active, -> { where(finished_at: nil) }
+
   def finished?
     finished_at.present?
   end

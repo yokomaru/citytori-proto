@@ -3,16 +3,14 @@ class WordChainWalksController < ApplicationController
 
   # GET /word_chain_walks or /word_chain_walks.json
   def index
-    @word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).all
-    @active_word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).where(finished_at: nil)
-    @completed_word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).where.not(finished_at: nil)
+    @active_word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).order(id: :desc).active
+    @completed_word_chain_walks = WordChainWalk.preload(:word_chain_walk_steps).order(id: :desc).finished
   end
 
   # GET /word_chain_walks/1 or /word_chain_walks/1.json
   def show
-    @word_chain_walk = WordChainWalk.preload(:word_chain_walk_steps).find(params[:id])
-    @word_chain_walk_steps = @word_chain_walk.word_chain_walk_steps.order(id: :desc)
-    @latest_step = @word_chain_walk.latest_step
+    @word_chain_walk = WordChainWalk.find(params[:id])
+    @word_chain_walk_steps = @word_chain_walk.word_chain_walk_steps.with_attached_image.order(id: :desc)
   end
 
   # POST /word_chain_walks or /word_chain_walks.json
