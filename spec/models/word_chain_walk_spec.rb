@@ -83,4 +83,16 @@ RSpec.describe WordChainWalk, type: :model do
 
     expect(word_chain_walk.target_char).to eq("り")
   end
+
+  it "まだ終了していない場合は現在時間から開始時間を引いた時間が帰ってくること" do
+    word_chain_walk = FactoryBot.build(:word_chain_walk, started_at: Time.zone.local(2026, 6, 2, 10, 0, 0))
+    travel_to Time.zone.local(2026, 6, 2, 11, 30, 0) do
+      expect(word_chain_walk.elapsed_seconds).to eq 5400
+    end
+  end
+
+  it "終了済み場合は終了時間から開始時間を引いた時間が帰ってくること" do
+    word_chain_walk = FactoryBot.build(:word_chain_walk, started_at: Time.zone.local(2026, 6, 2, 10, 0, 0), finished_at: Time.zone.local(2026, 6, 2, 11, 20, 21))
+    expect(word_chain_walk.elapsed_seconds).to eq 4821
+  end
 end
