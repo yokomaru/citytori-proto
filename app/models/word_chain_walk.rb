@@ -24,6 +24,16 @@ class WordChainWalk < ApplicationRecord
     word_chain_walk_steps.order(:id).last
   end
 
+  def elapsed_seconds
+    return nil if started_at.nil?
+
+    if finished?
+      finished_at - started_at
+    else
+      Time.zone.now - started_at
+    end
+  end
+
   def target_char
     return start_char if latest_step.nil?
     latest_step.word[-1] #本当は正規化必要
