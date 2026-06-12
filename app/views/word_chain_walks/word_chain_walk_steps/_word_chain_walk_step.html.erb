@@ -5,7 +5,7 @@
   </div>
   <div>
     <strong class="block font-medium mb-1">Image:</strong>
-    <%= image_tag word_chain_walk_step.image if word_chain_walk_step.image.present? %>
+    <%= image_tag word_chain_walk_step.image.variant(resize_to_limit: [500, nil]) if word_chain_walk_step.image.present? %>
   </div>
   <div>
     <strong class="block font-medium mb-1">Word:</strong>
