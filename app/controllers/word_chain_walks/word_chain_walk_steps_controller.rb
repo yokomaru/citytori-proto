@@ -51,6 +51,6 @@ class WordChainWalks::WordChainWalkStepsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def word_chain_walk_step_params
-    params.require(:word_chain_walk_step).permit(:word, :memo, :index, :latitude, :longitude, :word_chain_walk_id, :image)
+    params.require(:word_chain_walk_step).permit(:word, :memo, :latitude, :longitude, :image)
   end
 end
