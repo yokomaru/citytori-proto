@@ -11,6 +11,7 @@ class WordChainWalksController < ApplicationController
   def show
     @word_chain_walk = WordChainWalk.find(params[:id])
     @word_chain_walk_steps = @word_chain_walk.word_chain_walk_steps.with_attached_image.order(id: :desc)
+    @locations = @word_chain_walk.word_chain_walk_steps.where.not(latitude: nil, longitude: nil).order(id: :desc).pluck(:latitude, :longitude)
   end
 
   # POST /word_chain_walks or /word_chain_walks.json
