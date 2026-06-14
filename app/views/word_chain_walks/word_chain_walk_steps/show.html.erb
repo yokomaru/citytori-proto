@@ -7,7 +7,9 @@
 
   <h1 class="font-bold text-4xl">Showing word chain walk step</h1>
 
-  <%= render @word_chain_walk_step %>
 
+  <div data-controller="map">
+    <%= render @word_chain_walk_step %>
+  </div>
   <%= link_to "Back to word chain walk steps", word_chain_walk_path(@word_chain_walk_step.word_chain_walk), class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
 </div>
