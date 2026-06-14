@@ -8,7 +8,7 @@
 
   <% if @word_chain_walk.finished? %>
     <div>
-      かかった時間: <%= formatted_elapsed_time(word_chain_walk.elapsed_seconds) %>
+      かかった時間: <%= formatted_elapsed_time(@word_chain_walk.elapsed_seconds) %>
     </div>
     <div>
       最初の言葉: <%= @word_chain_walk.start_char %>
