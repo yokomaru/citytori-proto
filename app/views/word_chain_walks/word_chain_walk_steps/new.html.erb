@@ -5,7 +5,14 @@
   <div>
     <%= @word_chain_walk.target_char %> を探しましょう
   </div>
-  <%= render "form", word_chain_walk_step: @word_chain_walk_step, word_chain_walk: @word_chain_walk %>
+
+  <div data-controller="geolocation">
+    <%= button_tag "位置情報取得", type: "button", class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium", data: { action: "click->geolocation#fetchPosition" } %>
+
+    <p data-geolocation-target="status">位置情報取得状況</p>
+    <p data-geolocation-target="position">位置情報はありません</p>
+    <%= render "form", word_chain_walk_step: @word_chain_walk_step, word_chain_walk: @word_chain_walk %>
+  </div>
 
   <%= link_to "Back to word chain walk steps", word_chain_walk_path(@word_chain_walk), class: "w-full sm:w-auto text-center mt-2 sm:mt-0 sm:ml-2 rounded-md px-3.5 py-2.5 bg-gray-100 hover:bg-gray-50 inline-block font-medium" %>
 </div>
