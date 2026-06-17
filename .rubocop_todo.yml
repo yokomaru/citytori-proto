@@ -11,7 +11,7 @@
 # Configuration parameters: TreatCommentsAsGroupSeparators, ConsiderPunctuation.
 Bundler/OrderedGems:
   Exclude:
-    - 'Gemfile'
+    - "Gemfile"
 
 # Offense count: 2
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
@@ -27,15 +27,15 @@ Metrics/MethodLength:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 RSpec/BeEq:
   Exclude:
-    - 'spec/models/word_chain_walk_spec.rb'
+    - "spec/models/word_chain_walk_spec.rb"
 
 # Offense count: 4
 # Configuration parameters: Prefixes, AllowedPatterns.
 # Prefixes: when, with, without
 RSpec/ContextWording:
   Exclude:
-    - 'spec/requests/word_chain_walks/word_chain_walk_steps_spec.rb'
-    - 'spec/requests/word_chain_walks_spec.rb'
+    - "spec/requests/word_chain_walks/word_chain_walk_steps_spec.rb"
+    - "spec/requests/word_chain_walks_spec.rb"
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -43,20 +43,20 @@ RSpec/ContextWording:
 # SupportedStyles: described_class, explicit
 RSpec/DescribedClass:
   Exclude:
-    - 'spec/models/word_chain_walk_spec.rb'
+    - "spec/models/word_chain_walk_spec.rb"
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 RSpec/EmptyLineAfterFinalLet:
   Exclude:
-    - 'spec/requests/word_chain_walks/word_chain_walk_steps_spec.rb'
+    - "spec/requests/word_chain_walks/word_chain_walk_steps_spec.rb"
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowConsecutiveOneLiners.
 RSpec/EmptyLineAfterHook:
   Exclude:
-    - 'spec/system/word_chain_walks_spec.rb'
+    - "spec/system/word_chain_walks_spec.rb"
 
 # Offense count: 6
 # Configuration parameters: CountAsOne.
@@ -67,7 +67,7 @@ RSpec/ExampleLength:
 # This cop supports safe autocorrection (--autocorrect).
 RSpec/ExcessiveDocstringSpacing:
   Exclude:
-    - 'spec/requests/word_chain_walks/completions_spec.rb'
+    - "spec/requests/word_chain_walks/completions_spec.rb"
 
 # Offense count: 8
 RSpec/MultipleExpectations:
@@ -76,14 +76,14 @@ RSpec/MultipleExpectations:
 # Offense count: 2
 RSpec/RepeatedExample:
   Exclude:
-    - 'spec/models/word_chain_walk_spec.rb'
+    - "spec/models/word_chain_walk_spec.rb"
 
 # Offense count: 1
 # Configuration parameters: ForbiddenMethods, AllowedMethods.
 # ForbiddenMethods: decrement!, decrement_counter, increment!, increment_counter, insert, insert!, insert_all, insert_all!, toggle!, touch, touch_all, update_all, update_attribute, update_column, update_columns, update_counters, upsert, upsert_all
 Rails/SkipsModelValidations:
   Exclude:
-    - 'db/migrate/20260529163628_add_service_name_to_active_storage_blobs.active_storage.rb'
+    - "db/migrate/20260529163628_add_service_name_to_active_storage_blobs.active_storage.rb"
 
 # Offense count: 19
 # Configuration parameters: AllowedConstants.
@@ -104,4 +104,4 @@ Style/FormatStringToken:
 # SupportedStyles: single_quotes, double_quotes
 Style/StringLiterals:
   Exclude:
-    - 'Gemfile'
+    - "Gemfile"
