@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class AddLimitToWordInWordChainWalkSteps < ActiveRecord::Migration[8.1]
-def up
+  def up
     change_column :word_chain_walk_steps, :word, :string, limit: 100
   end
 

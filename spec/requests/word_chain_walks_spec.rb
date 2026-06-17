@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "WordChainWalks", type: :request do
-  describe "POST /word_chain_walks" do
-    context "散歩を作成する場合" do
-      it "作成が成功すること" do
+RSpec.describe 'WordChainWalks', type: :request do
+  describe 'POST /word_chain_walks' do
+    context '散歩を作成する場合' do
+      it '作成が成功すること' do
         expect do
           post word_chain_walks_path
         end.to change(WordChainWalk, :count).by(1)
