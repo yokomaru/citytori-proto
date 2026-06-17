@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddNotNullToWordInWordChainWalkSteps < ActiveRecord::Migration[8.1]
   def change
     # テーブル名は複数形の :users、カラム名は :name
