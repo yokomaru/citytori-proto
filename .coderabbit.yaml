@@ -41,4 +41,5 @@ reviews:
         - Stimulus controllerには画面上の振る舞いを中心に置き、業務ロジックを持たせすぎない。
         - DOM要素の取得は、可能な範囲でStimulusのtargets/values/classesを使う。
         - Turbo Drive/Turbo Frame/Turbo Streamと競合する処理になっていないか確認する。
-        - 外部ライブラリを初期化する場合は、Turboによる再描画や再接続時に二重初期化されないか確認する。
+        - Turboによる画面遷移や再描画で、イベントリスナーや外部ライブラリの初期化が重複しないか確認する。
+        - 外部ライブラリを使う場合は、disconnectで必要な後片付けができているか確認する。
