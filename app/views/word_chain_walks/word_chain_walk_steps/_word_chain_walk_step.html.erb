@@ -1,36 +1,45 @@
-<div id="<%= dom_id word_chain_walk_step %>" class="w-full sm:w-auto my-5 space-y-5">
+<div
+  id="<%= dom_id word_chain_walk_step %>"
+  class="w-full sm:w-auto my-5 space-y-5"
+>
   <div>
     <strong class="block font-medium mb-1">最初の文字</strong>
     <%= @initial_char %>
   </div>
+
   <div>
     <strong class="block font-medium mb-1">Image:</strong>
     <%= image_tag word_chain_walk_step.image.variant(resize_to_limit: [500, nil]) if word_chain_walk_step.image.present? %>
   </div>
+
   <div>
     <strong class="block font-medium mb-1">Word:</strong>
-    <span data-map-target="word">
-      <%= word_chain_walk_step.word %>
-    </span>
+    <span data-map-target="word"><%= word_chain_walk_step.word %></span>
   </div>
+
   <div>
     <strong class="block font-medium mb-1">Memo:</strong>
     <%= word_chain_walk_step.memo %>
   </div>
+
   <div>
     <strong class="block font-medium mb-1">Latitude:</strong>
-    <span data-map-target="latitude">
-      <%= word_chain_walk_step.latitude %>
-    </span>
+    <span data-map-target="latitude"><%= word_chain_walk_step.latitude %></span>
   </div>
+
   <div>
     <strong class="block font-medium mb-1">Longitude:</strong>
+
     <span data-map-target="longitude">
       <%= word_chain_walk_step.longitude %>
     </span>
   </div>
 
   <% if word_chain_walk_step.latitude.present? && word_chain_walk_step.longitude.present? %>
-    <div class="leaflet-container" data-map-target="placeholder" style="height: 500px; width: 500px;"></div>
+    <div
+      class="leaflet-container"
+      data-map-target="placeholder"
+      style="height: 500px; width: 500px;"
+    ></div>
   <% end %>
 </div>

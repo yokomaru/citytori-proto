@@ -2,6 +2,7 @@
 
 <div class="md:w-2/3 w-full">
   <h1 class="font-bold text-4xl">New word chain walk step</h1>
+
   <div>
     <%= @word_chain_walk.target_char %> を探しましょう
   </div>
@@ -11,6 +12,7 @@
 
     <p data-geolocation-target="status">位置情報取得状況</p>
     <p data-geolocation-target="position">位置情報はありません</p>
+
     <%= render "form", word_chain_walk_step: @word_chain_walk_step, word_chain_walk: @word_chain_walk %>
   </div>
 
