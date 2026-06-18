@@ -55,6 +55,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem "herb", require: false
+  gem 'brakeman', require: false
 end
 
 group :development do
