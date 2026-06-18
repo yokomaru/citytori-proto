@@ -10,6 +10,7 @@ export default class extends Controller {
   connect() {
     import("leaflet").then((L) => {
       if (!this.element.isConnected) return;
+      if (this.positionsValue.length === 0) return;
       this.map = L.map(this.placeholderTarget).setView(
         [this.positionsValue[0][0], this.positionsValue[0][1]],
         18,
