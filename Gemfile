@@ -54,6 +54,7 @@ group :development, :test do
   gem 'debug', platforms: %i[mri windows]
   gem 'factory_bot_rails'
   gem 'rspec-rails'
+  gem "herb", require: false
 end
 
 group :development do
@@ -65,6 +66,7 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
+
   gem "rubocop-rails-omakase", require: false
   gem 'rubocop-rspec', require: false
   gem 'rubocop-rspec_rails', require: false
