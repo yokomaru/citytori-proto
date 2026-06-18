@@ -7,7 +7,6 @@ export default class extends Controller {
   success(position) {
     const latitude = position.coords.latitude;
     const longitude = position.coords.longitude;
-    console.log(position);
 
     this.statusTarget.textContent = "";
     this.positionTarget.textContent = `緯度: ${latitude}°、経度: ${longitude}°`;
