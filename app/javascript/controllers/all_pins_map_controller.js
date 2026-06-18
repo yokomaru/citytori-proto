@@ -9,6 +9,7 @@ export default class extends Controller {
 
   connect() {
     import("leaflet").then((L) => {
+      if (!this.element.isConnected) return;
       this.map = L.map(this.placeholderTarget).setView(
         [this.positionsValue[0][0], this.positionsValue[0][1]],
         18,
@@ -26,7 +27,8 @@ export default class extends Controller {
 
   disconnect() {
     if (this.map) {
-      this.map.remove();
+      this.map?.remove();
+      this.map = null;
     }
   }
 }

@@ -6,6 +6,7 @@ export default class extends Controller {
 
   connect() {
     import("leaflet").then((L) => {
+      if (!this.element.isConnected) return;
       this.map = L.map(this.placeholderTarget).setView(
         [this.latitudeTarget.textContent, this.longitudeTarget.textContent],
         18,
@@ -26,6 +27,7 @@ export default class extends Controller {
   }
 
   disconnect() {
-    this.map.remove();
+    this.map?.remove();
+    this.map = null;
   }
 }
