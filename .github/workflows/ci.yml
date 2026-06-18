@@ -19,7 +19,28 @@ env:
   TZ: Asia/Tokyo
 
 jobs:
-  build:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ env.RUBY_VERSION }}
+          bundler-cache: true
+
+      - name: Run RuboCop
+        run: bundle exec rubocop
+
+      - name: Run Brakeman
+        run: bundle exec brakeman --no-pager
+
+  test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -53,12 +74,6 @@ jobs:
         with:
           ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: true
-
-      - name: Run RuboCop
-        run: bundle exec rubocop
-
-      - name: Run Brakeman
-        run: bundle exec brakeman --no-pager
 
       - name: Prepare database
         run: bin/rails db:prepare
