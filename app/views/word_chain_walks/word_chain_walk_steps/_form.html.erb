@@ -2,8 +2,7 @@
   <%= render 'shared/error_messages', object: form.object %>
 
   <div class="my-5">
-    <%= form.label :image %>
-    <%= form.file_field :image , accept: "image/*", capture: "environment" %>
+    <%= render 'image_preview', form: form, word_chain_walk_step: form.object %>
   </div>
 
   <div class="my-5">
