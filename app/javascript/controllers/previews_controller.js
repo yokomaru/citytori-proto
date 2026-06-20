@@ -14,8 +14,6 @@ export default class extends Controller {
     // const maxSizeInBytes = 10 * 1024 * 1024; // 10MB
     const validTypes = ["image/jpeg", "image/jpg", "image/png"];
 
-    console.log(file)
-
     if (!file) {
       this.removeImage();
       return;
@@ -29,12 +27,14 @@ export default class extends Controller {
       return;
     }
 
-    // ファイルサイズのチェック
     // if (file.size < maxSizeInBytes) {
+    //readerをfilereaderオブジェクトとして定義
+    // 有効な画像が選択されたことを親要素へ通知する
+    this.dispatch("valid-file-selected");
       //readerをfilereaderオブジェクトとして定義
-      const reader = new FileReader();
+    const reader = new FileReader();
       // ファイルをデータURLとして読み込む
-      reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
       // readerにファイル読み込み完了時の処理を定義
       reader.onload = (e) => {
         // 読み込んだデータをプレビュー画像のsrcに設定,e.targetでイベントを発生させたFilereaderオブジェクトを取得
@@ -53,8 +53,8 @@ export default class extends Controller {
 
   // 画像削除処理
   removeImage() {
-    this.inputTarget.value = null;
-    this.imageTarget.src = null;
+    this.inputTarget.value = "";
+    this.imageTarget.src = "";
     this.previewTarget.classList.add("hidden");
   }
 
