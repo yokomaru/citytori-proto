@@ -48,11 +48,15 @@
         <%= form.file_field :image,
           accept: "image/jpeg,image/jpg,image/png",
           capture: "environment",
-          class: "block w-full text-sm",
+          style: "position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;",
           data: {
             previews_target: "input",
             action: "change->previews#preview"
           } %>
+
+        <%= form.label :image,
+          "写真を撮る",
+          class: "inline-flex cursor-pointer items-center rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-500" %>
       </div>
 
       <div
@@ -63,7 +67,6 @@
       >
         <div class="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl">
           <div class="mb-4 flex items-center justify-between">
-            <h2 class="text-lg font-bold">見つけた言葉を登録</h2>
 
             <button
               type="button"
