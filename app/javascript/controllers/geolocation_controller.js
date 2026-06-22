@@ -21,8 +21,8 @@ export default class extends Controller {
     this.statusTarget.textContent = "位置情報取得できませんでした";
   }
 
-  // ボタンを押した時の処理
   fetchPosition() {
+    console.log("fetchPosition が呼ばれた")
     if (!navigator.geolocation) {
       this.statusTarget.textContent =
         "このブラウザーは位置情報に対応していません";
@@ -33,5 +33,18 @@ export default class extends Controller {
         (error) => this.error(error),
       );
     }
+
+    this.startedAt = performance.now()
+    this.statusTarget.textContent = "位置情報を取得中…"
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => this.success(position),
+      (error) => this.error(error),
+      {
+        enableHighAccuracy: false,
+        timeout: 100_000,
+        maximumAge: 60_000,
+      },
+    )
   }
 }
