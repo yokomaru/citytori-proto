@@ -26,13 +26,12 @@
       <%= @word_chain_walk.start_char %>
     </div>
   <% else %>
-    <%= render "target", word_chain_walk: @word_chain_walk %>
+    <%= render "word_chain_walks/target", word_chain_walk: @word_chain_walk %>
 
     <%= form_with(
       model: [@word_chain_walk, @word_chain_walk_step],
       data: {
         controller: "step-form previews geolocation",
-        step_form_target: "form",
         action: "
           previews:valid-file-selected->step-form#open
           previews:valid-file-selected->geolocation#fetchPosition
@@ -40,7 +39,7 @@
         "
       }
     ) do |form| %>
-      <div class="mb-4">
+      <div class="mb-5">
         <%= form.file_field :image,
           accept: "image/jpeg,image/jpg,image/png",
           capture: "environment",
@@ -63,30 +62,48 @@
         <%= form.label :image,
           "写真を撮る",
           class: "
-            inline-flex cursor-pointer items-center rounded-md
-            bg-blue-600 px-4 py-2 font-medium text-white
-            hover:bg-blue-500
+            inline-flex cursor-pointer items-center rounded-xl
+            bg-blue-600 px-5 py-3 font-semibold text-white
+            shadow-sm hover:bg-blue-500
           " %>
       </div>
 
       <div
-        class="fixed inset-0 z-50 items-center justify-center bg-black/40 p-4"
-        style="display: none;"
+        style="
+          display: none;
+          position: fixed;
+          inset: 0;
+          z-index: 50;
+          align-items: center;
+          justify-content: center;
+          padding: 1rem;
+          background: rgba(0, 0, 0, 0.5);
+        "
         data-step-form-target="modal"
         data-action="click->step-form#closeWhenBackgroundClicked"
       >
         <div
-          class="w-full max-w-lg rounded-lg bg-white p-6 shadow-xl"
-          style="max-height: calc(100vh - 2rem); overflow-y: auto;"
+          class="rounded-2xl bg-white p-6 shadow-2xl"
+          style="
+            width: min(100%, 32rem);
+            max-height: calc(100vh - 2rem);
+            overflow-y: auto;
+          "
         >
-          <div class="mb-4 flex items-center justify-between">
-            <h2 class="text-lg font-bold">
-              見つけた言葉を登録
-            </h2>
+          <div class="mb-5 flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-blue-600">
+                しりとり散歩
+              </p>
+
+              <h2 class="mt-1 text-xl font-bold text-gray-900">
+                見つけた言葉を登録
+              </h2>
+            </div>
 
             <button
               type="button"
-              class="text-2xl text-gray-500 hover:text-gray-700"
+              class="flex h-10 w-10 items-center justify-center rounded-full text-2xl text-gray-400 hover:bg-gray-100 hover:text-gray-700"
               aria-label="閉じる"
               data-action="click->step-form#close"
             >
@@ -94,24 +111,30 @@
             </button>
           </div>
 
-          <div class="hidden mb-4" data-previews-target="preview">
+          <div
+            class="mb-5 overflow-hidden rounded-xl bg-gray-100"
+            style="display: none;"
+            data-previews-target="preview"
+          >
             <img
               src=""
               alt="選択した画像のプレビュー"
-              class="max-h-64 w-full rounded-lg object-contain"
+              class="max-h-72 w-full object-contain"
               data-previews-target="image"
             >
           </div>
 
-          <p
-            class="mb-1 text-sm text-gray-600"
-            data-geolocation-target="status"
-          ></p>
+          <div class="mb-5 rounded-xl bg-blue-50 px-4 py-3">
+            <p
+              class="text-sm text-blue-700"
+              data-geolocation-target="status"
+            ></p>
 
-          <p
-            class="mb-4 text-sm text-gray-600"
-            data-geolocation-target="position"
-          ></p>
+            <p
+              class="mt-1 text-xs text-blue-600"
+              data-geolocation-target="position"
+            ></p>
+          </div>
 
           <%= form.hidden_field :latitude,
             data: { geolocation_target: "latitude" } %>
@@ -119,20 +142,25 @@
           <%= form.hidden_field :longitude,
             data: { geolocation_target: "longitude" } %>
 
-          <div class="mb-4">
+          <div class="mb-6">
             <%= form.label :word,
               "見つけた言葉",
-              class: "block text-sm font-medium" %>
+              class: "mb-2 block text-sm font-semibold text-gray-700" %>
 
             <%= form.text_field :word,
-              class: "mt-1 block w-full rounded border-gray-300",
+              class: "
+                block w-full rounded-xl border border-gray-300
+                px-4 py-3 text-lg outline-none
+                placeholder:text-gray-400
+                focus:border-blue-500 focus:ring-2 focus:ring-blue-100
+              ",
               placeholder: "#{@word_chain_walk.target_char}から始まる言葉" %>
           </div>
 
           <div class="flex gap-3">
             <button
               type="button"
-              class="rounded bg-gray-200 px-4 py-2 hover:bg-gray-300"
+              class="flex-1 rounded-xl bg-gray-100 px-4 py-3 font-medium text-gray-700 hover:bg-gray-200"
               data-action="click->step-form#close"
             >
               キャンセル
@@ -140,8 +168,9 @@
 
             <%= form.submit "登録する",
               class: "
-                rounded bg-blue-600 px-4 py-2
-                text-white hover:bg-blue-500
+                flex-1 cursor-pointer rounded-xl bg-blue-600
+                px-4 py-3 font-semibold text-white
+                shadow-sm hover:bg-blue-500
               " %>
           </div>
         </div>

@@ -22,7 +22,7 @@ export default class extends Controller {
 
     reader.onload = (loadEvent) => {
       this.imageTarget.src = loadEvent.target.result
-      this.previewTarget.classList.remove("hidden")
+      this.previewTarget.style.display = "block"
     }
 
     reader.readAsDataURL(file)
@@ -33,6 +33,6 @@ export default class extends Controller {
   removeImage() {
     this.inputTarget.value = ""
     this.imageTarget.src = ""
-    this.previewTarget.classList.add("hidden")
+    this.previewTarget.style.display = "none"
   }
 }

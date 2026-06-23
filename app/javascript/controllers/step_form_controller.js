@@ -1,26 +1,31 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["modal", "form"]
+  static targets = ["modal"]
 
   open() {
     this.modalTarget.style.display = "flex"
   }
 
   close() {
-    this.modalTarget.style.display = "none"
-    this.formTarget.reset()
+    this.resetAndClose()
   }
 
   closeAfterSubmit(event) {
     if (!event.detail.success) return
 
-    this.close()
+    this.resetAndClose()
   }
 
   closeWhenBackgroundClicked(event) {
     if (event.target === this.modalTarget) {
-      this.close()
+      this.resetAndClose()
     }
+  }
+
+  resetAndClose() {
+    this.element.reset()
+    this.modalTarget.style.display = "none"
+    this.dispatch("closed")
   }
 }
