@@ -13,7 +13,9 @@
     </p>
   <% end %>
 
-  <%= render 'shared/error_messages', object: @word_chain_walk_step %>
+  <div id="word_chain_walk_step_errors">
+    <%= render "shared/error_messages", object: @word_chain_walk_step %>
+  </div>
 
   <% if @word_chain_walk.finished? %>
     <div>
@@ -61,10 +63,16 @@
 
         <%= form.label :image,
           "写真を撮る",
-          class: "
-            inline-flex cursor-pointer items-center rounded-xl
-            bg-blue-600 px-5 py-3 font-semibold text-white
-            shadow-sm hover:bg-blue-500
+          style: "
+            display: inline-flex;
+            cursor: pointer;
+            align-items: center;
+            border-radius: 0.75rem;
+            padding: 0.75rem 1.25rem;
+            background-color: #2563eb;
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
           " %>
       </div>
 
@@ -73,38 +81,79 @@
           display: none;
           position: fixed;
           inset: 0;
-          z-index: 50;
+          z-index: 9999;
           align-items: center;
           justify-content: center;
           padding: 1rem;
-          background: rgba(0, 0, 0, 0.5);
+          background-color: rgba(0, 0, 0, 0.55);
         "
         data-step-form-target="modal"
         data-action="click->step-form#closeWhenBackgroundClicked"
       >
         <div
-          class="rounded-2xl bg-white p-6 shadow-2xl"
           style="
+            position: relative;
+            z-index: 1;
+            box-sizing: border-box;
             width: min(100%, 32rem);
             max-height: calc(100vh - 2rem);
             overflow-y: auto;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            background-color: #ffffff;
+            color: #111827;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.28);
+            opacity: 1;
           "
         >
-          <div class="mb-5 flex items-center justify-between">
+          <div
+            style="
+              display: flex;
+              align-items: flex-start;
+              justify-content: space-between;
+              gap: 1rem;
+              margin-bottom: 1.25rem;
+            "
+          >
             <div>
-              <p class="text-sm font-medium text-blue-600">
+              <p
+                style="
+                  margin: 0;
+                  font-size: 0.875rem;
+                  font-weight: 600;
+                "
+              >
                 しりとり散歩
               </p>
 
-              <h2 class="mt-1 text-xl font-bold text-gray-900">
+              <h2
+                style="
+                  margin: 0.25rem 0 0;
+                  color: #111827;
+                  font-size: 1.25rem;
+                  font-weight: 700;
+                "
+              >
                 見つけた言葉を登録
               </h2>
             </div>
 
             <button
               type="button"
-              class="flex h-10 w-10 items-center justify-center rounded-full text-2xl text-gray-400 hover:bg-gray-100 hover:text-gray-700"
               aria-label="閉じる"
+              style="
+                display: inline-flex;
+                width: 2.5rem;
+                height: 2.5rem;
+                align-items: center;
+                justify-content: center;
+                border: 0;
+                border-radius: 9999px;
+                background-color: transparent;
+                color: #6b7280;
+                font-size: 1.75rem;
+                cursor: pointer;
+              "
               data-action="click->step-form#close"
             >
               ×
@@ -112,26 +161,48 @@
           </div>
 
           <div
-            class="mb-5 overflow-hidden rounded-xl bg-gray-100"
-            style="display: none;"
+            style="
+              display: none;
+              margin-bottom: 1.25rem;
+              overflow: hidden;
+              border-radius: 0.75rem;
+              background-color: #f3f4f6;
+            "
             data-previews-target="preview"
           >
             <img
               src=""
               alt="選択した画像のプレビュー"
-              class="max-h-72 w-full object-contain"
+              style="
+                display: block;
+                width: 100%;
+                max-height: 18rem;
+                object-fit: contain;
+              "
               data-previews-target="image"
             >
           </div>
 
-          <div class="mb-5 rounded-xl bg-blue-50 px-4 py-3">
+          <div
+            style="
+              margin-bottom: 1.25rem;
+              padding: 0.75rem 1rem;
+              border-radius: 0.75rem;
+            "
+          >
             <p
-              class="text-sm text-blue-700"
+              style="
+                margin: 0;
+                font-size: 0.875rem;
+              "
               data-geolocation-target="status"
             ></p>
 
             <p
-              class="mt-1 text-xs text-blue-600"
+              style="
+                margin: 0.25rem 0 0;
+                font-size: 0.75rem;
+              "
               data-geolocation-target="position"
             ></p>
           </div>
@@ -142,35 +213,59 @@
           <%= form.hidden_field :longitude,
             data: { geolocation_target: "longitude" } %>
 
-          <div class="mb-6">
+          <div style="margin-bottom: 1.5rem;">
             <%= form.label :word,
               "見つけた言葉",
-              class: "mb-2 block text-sm font-semibold text-gray-700" %>
+              style: "
+                display: block;
+                margin-bottom: 0.5rem;
+                color: #374151;
+                font-size: 0.875rem;
+                font-weight: 700;
+              " %>
 
             <%= form.text_field :word,
-              class: "
-                block w-full rounded-xl border border-gray-300
-                px-4 py-3 text-lg outline-none
-                placeholder:text-gray-400
-                focus:border-blue-500 focus:ring-2 focus:ring-blue-100
-              ",
-              placeholder: "#{@word_chain_walk.target_char}から始まる言葉" %>
+              placeholder: "#{@word_chain_walk.target_char}から始まる言葉",
+              style: "
+                box-sizing: border-box;
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border: 1px solid #d1d5db;
+                border-radius: 0.75rem;
+                color: #111827;
+                font-size: 1.125rem;
+                background-color: #ffffff;
+              " %>
           </div>
 
-          <div class="flex gap-3">
+          <div style="display: flex; gap: 0.75rem;">
             <button
               type="button"
-              class="flex-1 rounded-xl bg-gray-100 px-4 py-3 font-medium text-gray-700 hover:bg-gray-200"
+              style="
+                flex: 1;
+                border: 0;
+                border-radius: 0.75rem;
+                padding: 0.75rem 1rem;
+                background-color: #f3f4f6;
+                color: #374151;
+                font-weight: 600;
+                cursor: pointer;
+              "
               data-action="click->step-form#close"
             >
               キャンセル
             </button>
 
             <%= form.submit "登録する",
-              class: "
-                flex-1 cursor-pointer rounded-xl bg-blue-600
-                px-4 py-3 font-semibold text-white
-                shadow-sm hover:bg-blue-500
+              style: "
+                flex: 1;
+                border: 0;
+                border-radius: 0.75rem;
+                padding: 0.75rem 1rem;
+                background-color: #2563eb;
+                color: #ffffff;
+                font-weight: 700;
+                cursor: pointer;
               " %>
           </div>
         </div>
@@ -178,18 +273,18 @@
     <% end %>
   <% end %>
 
-  <div>
-    <% if @word_chain_walk_steps.any? %>
-      <div
-        id="word_chain_walk_steps"
-        class="min-w-full divide-y divide-gray-200 space-y-5"
-      >
-        <% @word_chain_walk_steps.each do |word_chain_walk_step| %>
-          <%= render 'word_chain_walk_step', word_chain_walk: @word_chain_walk, word_chain_walk_step: word_chain_walk_step %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+  <% if @word_chain_walk_steps.any? %>
+    <div
+      id="word_chain_walk_steps"
+      class="min-w-full divide-y divide-gray-200 space-y-5"
+    >
+      <% @word_chain_walk_steps.each do |word_chain_walk_step| %>
+        <%= render "word_chain_walks/word_chain_walk_step",
+          word_chain_walk: @word_chain_walk,
+          word_chain_walk_step: word_chain_walk_step %>
+      <% end %>
+    </div>
+  <% end %>
 
   <% unless @word_chain_walk.finished? %>
     <div>
