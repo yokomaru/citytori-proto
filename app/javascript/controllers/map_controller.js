@@ -7,7 +7,6 @@ export default class extends Controller {
   connect() {
     import("leaflet").then((L) => {
       if (!this.element.isConnected) return;
-      if (this.positionsValue.length === 0) return;
       this.map = L.map(this.placeholderTarget).setView(
         [this.latitudeTarget.textContent, this.longitudeTarget.textContent],
         18,
