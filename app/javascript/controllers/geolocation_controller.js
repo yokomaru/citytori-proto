@@ -32,7 +32,7 @@ export default class extends Controller {
       );
     }
 
-    this.statusTarget.textContent = "位置情報を取得中…"
+    this.statusTarget.textContent = "位置情報を取得中…";
 
     navigator.geolocation.getCurrentPosition(
       (position) => this.success(position),
@@ -40,8 +40,8 @@ export default class extends Controller {
       {
         enableHighAccuracy: false,
         timeout: 10_000,
-        maximumAge: 60_000
-      }
-    )
+        maximumAge: 60_000,
+      },
+    );
   }
 }

@@ -19,17 +19,13 @@
 
   <% if @word_chain_walk.finished? %>
     <div>
-      かかった時間:
-      <%= formatted_elapsed_time(@word_chain_walk.elapsed_seconds) %>
+      かかった時間: <%= formatted_elapsed_time(@word_chain_walk.elapsed_seconds) %>
     </div>
-
     <div>
-      最初の言葉:
-      <%= @word_chain_walk.start_char %>
+      最初の言葉: <%= @word_chain_walk.start_char %>
     </div>
   <% else %>
     <%= render "word_chain_walks/target", word_chain_walk: @word_chain_walk %>
-
     <%= form_with(
       model: [@word_chain_walk, @word_chain_walk_step],
       data: {
