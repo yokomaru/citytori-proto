@@ -15,21 +15,25 @@ module WordChainWalks
       @word_chain_walk_step = WordChainWalkStep.new(word_chain_walk_id: params[:word_chain_walk_id])
     end
 
-    # POST /word_chain_walk_steps or /word_chain_walk_steps.json
     def create
       @word_chain_walk = WordChainWalk.find(params[:word_chain_walk_id])
-      @word_chain_walk_step = @word_chain_walk.word_chain_walk_steps.new(word_chain_walk_step_params)
+
+      @word_chain_walk_step =
+        @word_chain_walk.word_chain_walk_steps.build(word_chain_walk_step_params)
 
       if @word_chain_walk_step.save
-        if @word_chain_walk_step.word.end_with?('ん') # TODO: 正規化必要&本当はモデルに寄せたい
-          @word_chain_walk.update!(finished_at: Time.zone.now)
-          redirect_to word_chain_walk_completion_path(word_chain_walk_id: @word_chain_walk),
-                      notice: 'Word chain walk was successfully updated.', status: :see_other
-        else
-          redirect_to word_chain_walk_path(@word_chain_walk), notice: 'Word chain walk step was successfully created.'
+        respond_to do |format|
+          format.turbo_stream
+          format.html do
+            redirect_to word_chain_walk_path(@word_chain_walk),
+                        notice: '言葉を登録しました'
+          end
         end
       else
-        render :new, status: :unprocessable_content
+        @word_chain_walk_steps =
+          @word_chain_walk.word_chain_walk_steps.order(id: :desc)
+
+        render 'word_chain_walks/show', status: :unprocessable_entity
       end
     end
 

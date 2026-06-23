@@ -23,10 +23,6 @@ export default class extends Controller {
     reader.onload = (loadEvent) => {
       this.imageTarget.src = loadEvent.target.result
       this.previewTarget.classList.remove("hidden")
-
-      this.application
-        .getControllerForElementAndIdentifier(this.element, "step-form")
-        .open()
     }
 
     reader.readAsDataURL(file)
