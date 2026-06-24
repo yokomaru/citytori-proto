@@ -15,7 +15,7 @@ module WordChainWalks
       @word_chain_walk_step = WordChainWalkStep.new(word_chain_walk_id: params[:word_chain_walk_id])
     end
 
-    def create
+    def create # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       @word_chain_walk = WordChainWalk.find(params[:word_chain_walk_id])
 
       @word_chain_walk_step =
