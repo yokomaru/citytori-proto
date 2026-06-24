@@ -16,6 +16,7 @@ class WordChainWalksController < ApplicationController
     @locations = @word_chain_walk.word_chain_walk_steps.where.not(latitude: nil, longitude: nil).order(id: :desc).pluck(
       :latitude, :longitude
     )
+    @word_chain_walk_step = @word_chain_walk.word_chain_walk_steps.build
   end
 
   # POST /word_chain_walks or /word_chain_walks.json

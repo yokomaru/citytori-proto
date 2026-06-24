@@ -11,8 +11,8 @@ class WordChainWalkStep < ApplicationRecord
 
   validate :must_connect_previous_char
   validate :must_not_add_steps_to_finished_word_chain_walk
-
   validate :image_attached
+  validate :image_size_within_limit
 
   private
 
@@ -34,5 +34,12 @@ class WordChainWalkStep < ApplicationRecord
     return unless word_chain_walk.finished?
 
     errors.add(:word, 'は終了済みのしりとり散歩には追加できません')
+  end
+
+  def image_size_within_limit
+    return unless image.attached?
+    return if image.blob.byte_size <= 10.megabytes
+
+    errors.add(:image, 'は10MB以下にしてください')
   end
 end

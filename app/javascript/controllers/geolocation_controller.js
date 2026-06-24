@@ -1,6 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
 
-// Connects to data-controller="geolocation"
 export default class extends Controller {
   static targets = ["position", "status", "latitude", "longitude"];
 
@@ -21,17 +20,23 @@ export default class extends Controller {
     this.statusTarget.textContent = "位置情報取得できませんでした";
   }
 
-  // ボタンを押した時の処理
   fetchPosition() {
     if (!navigator.geolocation) {
       this.statusTarget.textContent =
         "このブラウザーは位置情報に対応していません";
-    } else {
-      this.statusTarget.textContent = "位置情報を取得中…";
-      navigator.geolocation.getCurrentPosition(
-        (position) => this.success(position),
-        (error) => this.error(error),
-      );
+      return;
     }
+
+    this.statusTarget.textContent = "位置情報を取得中…";
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => this.success(position),
+      (error) => this.error(error),
+      {
+        enableHighAccuracy: false,
+        timeout: 10_000,
+        maximumAge: 60_000,
+      },
+    );
   }
 }

@@ -1,0 +1,48 @@
+<%= form.label :image, "画像", class: "block text-sm font-medium text-gray-700 mb-2" %>
+
+<p class="text-sm text-black mb-4">※JPEG/JPG/PNG形式の画像のみ,10MB以下</p>
+
+<!-- 既存の画像があれば表示（編集時のみ） -->
+<% if word_chain_walk_step.persisted? && word_chain_walk_step.image.attached? %>
+  <div class="current-image mb-4">
+    <p class="text-sm text-gray-600 mb-2">現在の画像:</p>
+
+    <div class="relative inline-block">
+      <%= image_tag word_chain_walk_step.image,
+          alt: "現在の画像",
+          class: "max-w-full h-auto rounded-lg shadow-md max-h-64" %>
+    </div>
+  </div>
+  <p class="text-sm text-gray-600 mb-2">新しい画像を選択する場合:</p>
+<% end %>
+
+<!-- ファイル入力フィールド -->
+<%= form.file_field :image,
+    accept: "image/jpeg, image/jpg, image/png",
+    capture: "environment",
+    data: {
+      previews_target: "input",
+      action: "change->previews#preview"
+    } %>
+
+<div data-previews-target="preview" class="mt-4 hidden" style="display: none;">
+  <div class="relative inline-block">
+    <img
+      data-previews-target="image"
+      src=""
+      alt="プレビュー画像"
+      class="max-w-full h-auto rounded-lg shadow-md max-h-64"
+    >
+
+    <button
+      type="button"
+      data-action="click->previews#removeImage"
+      class="
+        absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6
+        flex items-center justify-center text-sm hover:bg-red-600
+      "
+    >
+      ×
+    </button>
+  </div>
+</div>
