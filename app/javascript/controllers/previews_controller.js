@@ -6,6 +6,7 @@ export default class extends Controller {
   preview(event) {
     const file = event.target.files[0];
     const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+    const maxSizeInBytes = 10 * 1024 * 1024;
 
     if (!file) {
       this.removeImage();
@@ -14,6 +15,12 @@ export default class extends Controller {
 
     if (!validTypes.includes(file.type)) {
       alert("JPEG、JPG、PNG形式のファイルを選択してください。");
+      this.removeImage();
+      return;
+    }
+
+    if (file.size > maxSizeInBytes) {
+      alert("画像は10MB以下にしてください。");
       this.removeImage();
       return;
     }
