@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'tempfile'
 
 RSpec.describe 'WordChainWalks::WordChainWalkSteps', type: :request do
   let(:word_chain_walk) { FactoryBot.create(:word_chain_walk, start_char: 'り') }
@@ -74,6 +75,39 @@ RSpec.describe 'WordChainWalks::WordChainWalkSteps', type: :request do
 
         expect(response).to redirect_to(word_chain_walk_path(word_chain_walk))
       end
+    end
+  end
+
+  describe 'image size validation' do
+    it '10MB以下の画像は有効である' do
+      step = FactoryBot.build(:word_chain_walk_step)
+
+      step.image.attach(
+        io: File.open(Rails.root.join('spec/fixtures/files/480x320.png')),
+        filename: '480x320.png',
+        content_type: 'image/png'
+      )
+
+      expect(step).to be_valid
+    end
+
+    it '10MBを超える画像は無効である' do
+      file = Tempfile.new(['large_image', '.png'])
+      file.truncate(10.megabytes + 1)
+      file.rewind
+
+      step = FactoryBot.build(:word_chain_walk_step)
+
+      step.image.attach(
+        io: file,
+        filename: 'large_image.png',
+        content_type: 'image/png'
+      )
+
+      expect(step).to be_invalid
+      expect(step.errors[:image]).to include('は10MB以下にしてください')
+    ensure
+      file&.close!
     end
   end
 end
