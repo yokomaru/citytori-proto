@@ -22,7 +22,7 @@ module WordChainWalks
         @word_chain_walk.word_chain_walk_steps.build(word_chain_walk_step_params)
 
       if @word_chain_walk_step.save
-        if @word_chain_walk_step.word.end_with?('ん')
+        if @word_chain_walk_step.word.end_with?('ん') # TODO: 正規化必要&本当はモデルに寄せたい
           @word_chain_walk.update!(finished_at: Time.zone.now)
 
           redirect_to word_chain_walk_completion_path(@word_chain_walk),
