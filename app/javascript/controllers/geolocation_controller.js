@@ -24,12 +24,7 @@ export default class extends Controller {
     if (!navigator.geolocation) {
       this.statusTarget.textContent =
         "このブラウザーは位置情報に対応していません";
-    } else {
-      this.statusTarget.textContent = "位置情報を取得中…";
-      navigator.geolocation.getCurrentPosition(
-        (position) => this.success(position),
-        (error) => this.error(error),
-      );
+      return;
     }
 
     this.statusTarget.textContent = "位置情報を取得中…";
