@@ -157,11 +157,16 @@ RSpec.describe 'WordChainWalks', type: :system do
 
     large_image = create_large_image_file
 
+    # ネイティブダイアログを抑制してメッセージをキャプチャ
+    page.execute_script('window.alert = function(msg) { window._alertMsg = msg; }')
+
     attach_file(
       'word_chain_walk_step_image',
       large_image.path,
       make_visible: true
     )
+
+    expect(page.evaluate_script('window._alertMsg')).to eq('画像は10MB以下にしてください。')
 
     expect(page).to have_css(
       '[data-step-form-target="modal"]',
