@@ -1,9 +1,10 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["modal"];
+  static targets = ["modal", "errors"];
 
   open() {
+    this.clearErrors();
     this.modalTarget.style.display = "flex";
   }
 
@@ -17,15 +18,15 @@ export default class extends Controller {
     this.resetAndClose();
   }
 
-  closeWhenBackgroundClicked(event) {
-    if (event.target === this.modalTarget) {
-      this.resetAndClose();
-    }
-  }
-
   resetAndClose() {
     this.element.reset();
+    this.clearErrors();
     this.modalTarget.style.display = "none";
-    this.dispatch("closed");
+  }
+
+  clearErrors() {
+    if (!this.hasErrorsTarget) return;
+
+    this.errorsTarget.innerHTML = "";
   }
 }

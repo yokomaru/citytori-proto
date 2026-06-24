@@ -175,6 +175,39 @@ RSpec.describe 'WordChainWalks', type: :system do
     large_image&.close!
   end
 
+  scenario 'モーダルを閉じて再度開くと、前回のエラー表示が消える' do
+    word_chain_walk =
+      FactoryBot.create(:word_chain_walk, start_char: 'る')
+
+    visit word_chain_walk_path(word_chain_walk)
+
+    attach_step_image
+
+    click_button '登録する'
+
+    within '[data-step-form-target="modal"]' do
+      expect(page).to have_content("Word can't be blank")
+    end
+
+    click_button 'キャンセル'
+
+    expect(page).to have_css(
+      '[data-step-form-target="modal"]',
+      visible: false
+    )
+
+    attach_step_image
+
+    expect(page).to have_css(
+      '[data-step-form-target="modal"]',
+      visible: true
+    )
+
+    within '[data-step-form-target="modal"]' do
+      expect(page).not_to have_content("Word can't be blank")
+    end
+  end
+
   private
 
   def create_large_image_file
