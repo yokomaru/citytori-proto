@@ -69,7 +69,7 @@ RSpec.describe 'WordChainWalks', type: :system do
     expect(word_chain_walk.reload.finished_at).to be_present
   end
 
-  scenario '言葉を入力しないとStepを登録できず、エラーが表示される' do
+  scenario '言葉を入力しないとStepを登録できず、モーダル内にエラーが表示される' do
     word_chain_walk =
       FactoryBot.create(:word_chain_walk, start_char: 'る')
 
@@ -84,9 +84,14 @@ RSpec.describe 'WordChainWalks', type: :system do
 
     expect do
       click_button '登録する'
+
+      expect(page).to have_content("Word can't be blank")
     end.not_to change(WordChainWalkStep, :count)
 
-    expect(page).to have_content("Word can't be blank")
+    expect(page).to have_css(
+      '[data-step-form-target="modal"]',
+      visible: true
+    )
   end
 
   scenario 'Stepが0件の散歩でも、最初の1件を一覧に追加できる' do
