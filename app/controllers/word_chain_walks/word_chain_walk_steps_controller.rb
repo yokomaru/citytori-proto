@@ -38,16 +38,26 @@ module WordChainWalks
           end
         end
       else
-        @word_chain_walk_steps =
-          @word_chain_walk.word_chain_walk_steps.with_attached_image.order(id: :desc)
+        respond_to do |format|
+          format.turbo_stream do
+            render :create, status: :unprocessable_entity
+          end
 
-        @locations =
-          @word_chain_walk.word_chain_walk_steps
-                          .where.not(latitude: nil, longitude: nil)
-                          .order(id: :desc)
-                          .pluck(:latitude, :longitude)
+          format.html do
+            @word_chain_walk_steps =
+              @word_chain_walk.word_chain_walk_steps
+                              .with_attached_image
+                              .order(id: :desc)
 
-        render 'word_chain_walks/show', status: :unprocessable_entity
+            @locations =
+              @word_chain_walk.word_chain_walk_steps
+                              .where.not(latitude: nil, longitude: nil)
+                              .order(id: :desc)
+                              .pluck(:latitude, :longitude)
+
+            render 'word_chain_walks/show', status: :unprocessable_entity
+          end
+        end
       end
     end
 
