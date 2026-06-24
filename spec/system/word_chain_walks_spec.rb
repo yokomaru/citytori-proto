@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'tempfile'
 
 RSpec.describe 'WordChainWalks', type: :system do
   before do
     driven_by(:selenium_chrome_headless)
   end
 
-  scenario '通常登録すると、画面遷移せずにStep一覧と次の文字が更新される' do
+  scenario '画面遷移せずにStep一覧と次の文字が更新される' do
     word_chain_walk =
       FactoryBot.create(:word_chain_walk, start_char: 'る')
 
@@ -143,7 +144,45 @@ RSpec.describe 'WordChainWalks', type: :system do
     expect(word_input.value).to eq('')
   end
 
+  scenario '10MBを超える画像を選択するとモーダルを開かない' do
+    word_chain_walk =
+      FactoryBot.create(:word_chain_walk, start_char: 'る')
+
+    visit word_chain_walk_path(word_chain_walk)
+
+    large_image = create_large_image_file
+
+    attach_file(
+      'word_chain_walk_step_image',
+      large_image.path,
+      make_visible: true
+    )
+
+    expect(page).to have_css(
+      '[data-step-form-target="modal"]',
+      visible: false
+    )
+
+    expect(
+      find('#word_chain_walk_step_image', visible: :all).value
+    ).to be_empty
+  ensure
+    large_image&.close!
+  end
+
   private
+
+  def create_large_image_file
+    Tempfile.new(['large_image', '.png']).tap do |file|
+      source_image =
+        Rails.root.join('spec/fixtures/files/480x320.png')
+
+      file.binmode
+      file.write(File.binread(source_image))
+      file.truncate(10.megabytes + 1)
+      file.rewind
+    end
+  end
 
   def attach_step_image
     attach_file(
