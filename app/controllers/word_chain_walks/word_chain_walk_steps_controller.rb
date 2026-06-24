@@ -22,11 +22,19 @@ module WordChainWalks
         @word_chain_walk.word_chain_walk_steps.build(word_chain_walk_step_params)
 
       if @word_chain_walk_step.save
-        respond_to do |format|
-          format.turbo_stream
-          format.html do
-            redirect_to word_chain_walk_path(@word_chain_walk),
-                        notice: '言葉を登録しました'
+        if @word_chain_walk_step.word.end_with?('ん')
+          @word_chain_walk.update!(finished_at: Time.zone.now)
+
+          redirect_to word_chain_walk_completion_path(@word_chain_walk),
+                      notice: 'しりとり散歩が完了しました',
+                      status: :see_other
+        else
+          respond_to do |format|
+            format.turbo_stream
+            format.html do
+              redirect_to word_chain_walk_path(@word_chain_walk),
+                          notice: '言葉を登録しました'
+            end
           end
         end
       else
