@@ -4,3 +4,9 @@ plugins:
   - rubocop-rails
   - rubocop-rspec
   - rubocop-performance
+
+RSpec/ExampleLength:
+  Max: 30
+
+RSpec/MultipleExpectations:
+  Max: 10
