@@ -1,0 +1,10 @@
+<div
+  id="word_chain_walk_steps"
+  class="min-w-full divide-y divide-gray-200 space-y-5"
+>
+  <% word_chain_walk_steps.each do |word_chain_walk_step| %>
+    <%= render "word_chain_walks/word_chain_walk_step",
+      word_chain_walk: word_chain_walk,
+      word_chain_walk_step: word_chain_walk_step %>
+  <% end %>
+</div>

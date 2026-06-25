@@ -21,6 +21,11 @@ module WordChainWalks
       @word_chain_walk_step =
         @word_chain_walk.word_chain_walk_steps.build(word_chain_walk_step_params)
 
+      @word_chain_walk_steps =
+        @word_chain_walk.word_chain_walk_steps
+                        .with_attached_image
+                        .order(id: :desc)
+
       if @word_chain_walk_step.save
         if @word_chain_walk_step.word.end_with?('ん') # TODO: 正規化必要&本当はモデルに寄せたい
           @word_chain_walk.update!(finished_at: Time.zone.now)
