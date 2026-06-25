@@ -1,22 +1,24 @@
 import { Controller } from "@hotwired/stimulus"
 
-// 画像選択後に、
+// 画像選択時に、
 // - ファイル形式・サイズを確認する
-// - 画像を圧縮して JPEG 化する
-// - 圧縮後の画像をフォーム送信用 input に入れ直す
+// - 画像を縮小・JPEG化する
+// - 圧縮後の画像をフォーム送信対象に差し替える
 // - プレビューを表示する
-// - 親 controller に「有効な画像が選ばれた」と通知する
+// - 有効な画像が選ばれたことを親要素へ通知する
 // controller
 export default class extends Controller {
   // HTML 側の data-previews-target="..." と対応する要素
   //
   // input: 実際にフォーム送信される file input
   // preview: プレビュー全体を囲む要素
-  // image: プレビューとして表示する img 要素
+  // image: プレビュー表示用の img 要素
   static targets = ["input", "preview", "image"]
 
-  // controller が画面に接続されたときに呼ばれる
-  // Object URL を後で解放できるよう、初期値を持たせる
+  // controller が DOM に接続されたときに呼ばれる
+  //
+  // プレビュー表示用に作成する Object URL を後で解放できるよう、
+  // 初期値を持たせる
   connect() {
     this.previewUrl = null
   }
@@ -24,7 +26,7 @@ export default class extends Controller {
   // Turbo による画面更新や画面遷移などで、
   // controller が DOM から外れるときに呼ばれる
   //
-  // 作成した Object URL を不要なまま残さないよう解放する
+  // 作成済みの Object URL を解放する
   disconnect() {
     this.revokePreviewUrl()
   }
@@ -34,35 +36,18 @@ export default class extends Controller {
     // ユーザーが選択した最初のファイルを取得する
     const originalFile = event.target.files[0]
 
-    // 許可する MIME タイプ
-    const validTypes = ["image/jpeg", "image/png"]
+    // 選択されたファイルが使えるか確認する
+    const errorMessage = this.validateFile(originalFile)
 
-    // アップロード前の元ファイルの上限サイズ: 10MB
-    const maxSizeInBytes = 10 * 1024 * 1024
-
-    // ファイル選択をキャンセルした場合など
-    if (!originalFile) {
-      // input とプレビューを初期化する
-      this.removeImage()
-      return
-    }
-
-    // JPEG / PNG 以外は受け付けない
-    if (!validTypes.includes(originalFile.type)) {
-      alert("JPEG、JPG、PNG形式のファイルを選択してください。")
-      this.removeImage()
-      return
-    }
-
-    // 圧縮前のファイルが 10MB を超えていたら受け付けない
-    if (originalFile.size > maxSizeInBytes) {
-      alert("画像は10MB以下にしてください。")
+    // ファイルが不正な場合は、理由を表示して入力・プレビューを初期化する
+    if (errorMessage) {
+      alert(errorMessage)
       this.removeImage()
       return
     }
 
     try {
-      // 画像を縮小・JPEG化した新しい File を作る
+      // 元画像を縮小し、JPEG の File を作成する
       const compressedFile = await this.compressImage(originalFile)
 
       // 開発中の確認用ログ
@@ -78,60 +63,94 @@ export default class extends Controller {
         size: compressedFile.size,
       })
 
-      // file input の files は通常直接代入できないため、
-      // DataTransfer を経由して圧縮後の File に差し替える
+      // file input の files は通常直接変更できないため、
+      // DataTransfer を使って圧縮後の File に差し替える
       const dataTransfer = new DataTransfer()
       dataTransfer.items.add(compressedFile)
       this.inputTarget.files = dataTransfer.files
 
-      // 圧縮後の画像をプレビューに表示する
+      // 圧縮後の画像を画面に表示する
       this.showPreview(compressedFile)
 
-      // 親の要素に "previews:valid-file-selected" イベントを送る
+      // 親要素に "previews:valid-file-selected" イベントを送る
       //
       // 例:
       // data-action="previews:valid-file-selected->geolocation#fetchPosition"
       //
-      // としていれば、このタイミングで位置情報取得を始められる
+      // としていれば、画像選択後に位置情報取得を始められる
       this.dispatch("valid-file-selected")
     } catch (error) {
-      // 画像読み込み・canvas 変換・Blob作成などに失敗した場合
+      // 画像読み込み、canvas 描画、Blob 作成などに失敗した場合
       console.error("画像の圧縮に失敗しました", error)
       alert("画像の処理に失敗しました。もう一度選択してください。")
       this.removeImage()
     }
   }
 
-  // 画像を最大 1600px に縮小し、JPEG の File として返す
+  // ファイル形式と圧縮前サイズを確認する
+  //
+  // 問題がなければ null、
+  // 問題があれば表示用のエラーメッセージを返す
+  validateFile(file) {
+    // 受け付ける MIME タイプ
+    const validTypes = ["image/jpeg", "image/png"]
+
+    // 圧縮前のファイルサイズ上限: 10MB
+    const maxSizeInBytes = 10 * 1024 * 1024
+
+    // ファイル選択をキャンセルした場合などは、
+    // エラーにせず後続の処理を止める
+    if (!file) {
+      return null
+    }
+
+    // JPEG / PNG 以外は受け付けない
+    if (!validTypes.includes(file.type)) {
+      return "JPEG、JPG、PNG形式のファイルを選択してください。"
+    }
+
+    // 圧縮前のサイズが大きすぎる場合は受け付けない
+    if (file.size > maxSizeInBytes) {
+      return "画像は10MB以下にしてください。"
+    }
+
+    return null
+  }
+
+  // 画像を最大 1600px に縮小し、
+  // JPEG の File として返す
   async compressImage(file) {
     // File を img 要素として読み込む
     const image = await this.loadImage(file)
 
-    // 長辺の最大サイズ
+    // 縦・横のうち長い方の最大サイズ
     const maxSize = 1600
 
-    // 元画像が 1600px 以下なら scale は 1 のまま
-    // 大きい場合だけ、縦横比を保ったまま縮小する
+    // 1600px 以下なら scale は 1 のまま、
+    // 大きければ縦横比を保ったまま縮小する
     const scale = Math.min(
       1,
       maxSize / image.naturalWidth,
       maxSize / image.naturalHeight,
     )
 
-    // 縮小後の画像サイズ
+    // 縮小後の幅・高さ
     const width = Math.round(image.naturalWidth * scale)
     const height = Math.round(image.naturalHeight * scale)
 
-    // ブラウザ上で画像加工するための canvas を作る
+    // 開発中の確認用ログ
+    console.log("圧縮後の画像サイズ", { width, height })
+
+    // ブラウザ上で画像を加工するための canvas を作る
     const canvas = document.createElement("canvas")
     canvas.width = width
     canvas.height = height
 
-    // canvas に絵を描くための 2D コンテキストを取得する
+    // canvas に描画するための 2D コンテキストを取得する
     const context = canvas.getContext("2d")
 
-    // PNG に透明部分がある場合、JPEG 化すると透明を保持できない
-    // そのため、先に白背景を描いておく
+    // PNG の透明部分は JPEG では保持できないため、
+    // 透明部分がある場合は白背景になるよう先に塗る
     context.fillStyle = "#ffffff"
     context.fillRect(0, 0, width, height)
 
@@ -149,15 +168,14 @@ export default class extends Controller {
           }
         },
         "image/jpeg",
-        // JPEG の品質。1 に近いほど高画質・大容量
+        // JPEG の画質。1 に近いほど高画質・大容量になる
         0.8,
       )
     })
 
-    // Blob をフォーム送信できる File に変換して返す
+    // Blob をフォーム送信用の File に変換して返す
     return new File(
       [blob],
-      // 元ファイル名の拡張子を jpg にする
       this.compressedFileName(file.name),
       {
         type: "image/jpeg",
@@ -174,26 +192,26 @@ export default class extends Controller {
       // File をブラウザ内で参照するための一時 URL を作る
       const imageUrl = URL.createObjectURL(file)
 
-      // 読み込み成功時
+      // 画像の読み込みに成功した場合
       image.onload = () => {
-        // 画像の読み込みが終わったので、この URL はもう不要
+        // 画像の読み込み後は、この URL は不要なので解放する
         URL.revokeObjectURL(imageUrl)
         resolve(image)
       }
 
-      // 読み込み失敗時
+      // 画像の読み込みに失敗した場合
       image.onerror = () => {
         // 失敗時も URL を解放する
         URL.revokeObjectURL(imageUrl)
         reject(new Error("画像を読み込めませんでした"))
       }
 
-      // 作成した URL を指定して画像読み込みを開始する
+      // 一時 URL を指定して画像の読み込みを開始する
       image.src = imageUrl
     })
   }
 
-  // 元のファイル名の拡張子を jpg に変える
+  // 元ファイル名の拡張子を jpg に変える
   //
   // photo.png -> photo.jpg
   // IMG_001.JPG -> IMG_001.jpg
@@ -205,48 +223,43 @@ export default class extends Controller {
 
   // 圧縮後の File をプレビューとして表示する
   showPreview(file) {
-    // すでに別画像の Object URL があれば、先に解放する
+    // すでに別画像の Object URL があれば先に解放する
     this.revokePreviewUrl()
 
-    // プレビュー表示用の Object URL を作る
+    // プレビュー表示用の一時 URL を作る
     this.previewUrl = URL.createObjectURL(file)
 
-    // img 要素に画像を表示する
+    // img 要素に圧縮後の画像を表示する
     this.imageTarget.src = this.previewUrl
 
     // プレビュー領域を表示する
     this.previewTarget.style.display = "block"
-
-    // ここにあった FileReader は削除してよい
-    //
-    // Object URL だけでプレビューできているため、
-    // FileReader で Data URL を作る必要はない
   }
 
-  // ファイル選択やプレビューを初期状態に戻す
+  // file input とプレビューを初期状態へ戻す
   removeImage() {
     // フォーム送信対象のファイルを空にする
     this.inputTarget.value = ""
 
-    // img 要素から画像を外す
+    // img 要素に設定している画像を外す
     this.imageTarget.src = ""
 
     // プレビュー領域を隠す
     this.previewTarget.style.display = "none"
 
-    // プレビュー用 Object URL を解放する
+    // プレビュー用の Object URL を解放する
     this.revokePreviewUrl()
   }
 
   // showPreview で作った Object URL を解放する
   revokePreviewUrl() {
-    // URL が作られていなければ何もしない
+    // まだ Object URL を作っていない場合は何もしない
     if (!this.previewUrl) return
 
-    // ブラウザに「この一時 URL はもう不要」と伝える
+    // ブラウザに「この一時 URL は不要」と伝える
     URL.revokeObjectURL(this.previewUrl)
 
-    // 解放済みであることを controller 側にも反映する
+    // controller 側でも解放済みとして扱う
     this.previewUrl = null
   }
 }
