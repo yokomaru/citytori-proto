@@ -34,5 +34,7 @@ module CitytoriProto
                        helper_specs: true,
                        routing_specs: false
     end
+
+    config.active_storage.variant_processor = :vips
   end
 end
